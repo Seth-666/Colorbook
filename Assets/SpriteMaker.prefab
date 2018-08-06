@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1461060212312522}
+  m_IsPrefabAsset: 1
+--- !u!1 &1461060212312522
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4911144950109314}
+  - component: {fileID: 114141650834020924}
+  m_Layer: 0
+  m_Name: SpriteMaker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4911144950109314
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1461060212312522}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.1284885, y: 1.4932163, z: 0.0029296875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114141650834020924
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1461060212312522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02bab79b337e8a44db24e1c10d6644aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 2800000, guid: e3db8cb74a76285489c392ee8d0e5df3, type: 3}
+  getData: 0
+  saveData: 0
+  loadData: 0
+  renderData: 0
+  tile: {fileID: 114865934646958290, guid: 5fae9d5679a7c0247a7b5faf206dd898, type: 2}
+  colors: []
+  xSize: 0
+  ySize: 0
+  tileSize: 1
+  selected: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
+  startCol: {r: 0.9150943, g: 0.9150943, b: 0.9150943, a: 1}
+  endCol: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
+  container: {fileID: 0}
+  dataName: 
+  tags: []
