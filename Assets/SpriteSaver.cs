@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SpriteSaver : MonoBehaviour {
 	#if UNITY_EDITOR
+
+	public LayerMask layer;
+
 	public Texture2D source;
 	public bool getData;
 	public bool saveData;
@@ -28,6 +31,10 @@ public class SpriteSaver : MonoBehaviour {
 	public string dataName;
 	public string[] tags;
 
+	public GameObject obj;
+	public bool testCreate = false;
+	public Texture2D createdTexture;
+
 	void Update(){
 		if (getData) {
 			getData = false;
@@ -45,6 +52,53 @@ public class SpriteSaver : MonoBehaviour {
 			renderData = false;
 			RenderData ();
 		}
+		if (testCreate) {
+			testCreate = false;
+			TestCreate ();
+		}
+		if (Input.GetMouseButtonDown (0)) {
+			RaycastHit hit;
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			Debug.DrawRay (ray.origin, ray.direction * 10, Color.green, 10);
+			if (Physics.Raycast (ray, out hit)) {
+
+				int x =	Mathf.FloorToInt(hit.textureCoord.x * createdTexture.width);
+				int y = Mathf.FloorToInt(hit.textureCoord.y * createdTexture.height);
+				if (spriteGrid [x, y] > 0) {
+					createdTexture.SetPixel (x, y, Color.black);
+				}
+
+				//Vector2 hitPoint = hit.textureCoord;
+				//hitPoint.x = Mathf.FloorToInt(hitPoint.x * createdTexture.width);
+				//hitPoint.y = Mathf.FloorToInt(hitPoint.y * createdTexture.height);
+				//if (spriteGrid [(int)hitPoint.x, (int)hitPoint.y] > 0) {
+				//	createdTexture.SetPixel ((int)hitPoint.x, (int)hitPoint.y, Color.black);
+				//}
+				createdTexture.Apply ();
+			}
+		}
+	}
+
+	void TestCreate(){
+		GameObject newObj = Instantiate (obj);
+		Vector3 newScale = new Vector3 (xSize * 0.01f, 1, ySize * 0.01f);
+		newObj.transform.localScale = newScale;
+		newObj.transform.position = Vector3.zero;
+		Texture2D tex = new Texture2D (xSize, ySize);
+		Color transCol = new Color (1, 1, 1, 0);
+		for (int xx = 0; xx < xSize; xx++) {
+			for (int yy = 0; yy < ySize; yy++) {
+				if (spriteGrid [xx, yy] == -1) {
+					tex.SetPixel (xx, yy, transCol);
+				} else {
+					tex.SetPixel (xx, yy, colors [spriteGrid [xx, yy]]);
+				}
+			}
+		}
+		tex.filterMode = FilterMode.Point;
+		tex.Apply ();
+		createdTexture = tex;
+		newObj.GetComponent<MeshRenderer> ().material.mainTexture = tex;
 	}
 
 	void GetData(){
