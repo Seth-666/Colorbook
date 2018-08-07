@@ -55,9 +55,10 @@ public class InputManager : MonoBehaviour {
 						touchTime += Time.deltaTime;
 						if (touchTime >= touchMax) {
 							state = Globals.InputState.Painting;
-							if (Physics2D.OverlapPoint (currTouch, mask)) {
-								Tile theTile = Physics2D.OverlapPoint (currTouch, mask).GetComponent<Tile> ();
-								GameManager.Instance.painter.TryPaintTile (theTile, selectedColor);
+							Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+							RaycastHit hit;
+							if (Physics.Raycast (ray, out hit, mask)) {
+								GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
 							}
 						} 
 						//If the distance has been exceeded, move the camera.
@@ -70,11 +71,11 @@ public class InputManager : MonoBehaviour {
 					} else if (state == Globals.InputState.Dragging) {
 						Vector3 delta = currTouch - lastTouch;
 						GameManager.Instance.cam.Pan (delta);
-						//lastTouch = delta;
 					} else if (state == Globals.InputState.Painting) {
-						if (Physics2D.OverlapPoint (currTouch, mask)) {
-							Tile theTile = Physics2D.OverlapPoint (currTouch, mask).GetComponent<Tile> ();
-							GameManager.Instance.painter.TryPaintTile (theTile, selectedColor);
+						Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+						RaycastHit hit;
+						if (Physics.Raycast (ray, out hit, mask)) {
+							GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
 						}
 					}
 				}
@@ -87,17 +88,19 @@ public class InputManager : MonoBehaviour {
 					touchTime = 0;
 					if (state == Globals.InputState.Waiting) {
 						//Try to paint pixel here.
-						if (Physics2D.OverlapPoint (currTouch, mask)) {
-							Tile theTile = Physics2D.OverlapPoint (currTouch, mask).GetComponent<Tile> ();
-							GameManager.Instance.painter.TryPaintTile (theTile, selectedColor);
+						Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+						RaycastHit hit;
+						if (Physics.Raycast (ray, out hit, mask)) {
+							GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
 						}
 					} else if (state == Globals.InputState.Dragging) {
 						//Put the camera to a final position.
 					} else if (state == Globals.InputState.Painting) {
 						//Try to paint last pixel here.
-						if (Physics2D.OverlapPoint (currTouch, mask)) {
-							Tile theTile = Physics2D.OverlapPoint (currTouch, mask).GetComponent<Tile> ();
-							GameManager.Instance.painter.TryPaintTile (theTile, selectedColor);
+						Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+						RaycastHit hit;
+						if (Physics.Raycast (ray, out hit, mask)) {
+							GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
 						}
 					}
 					state = Globals.InputState.Waiting;
@@ -122,9 +125,10 @@ public class InputManager : MonoBehaviour {
 							touchTime += Time.deltaTime;
 							if (touchTime >= touchMax) {
 								state = Globals.InputState.Painting;
-								if (Physics2D.OverlapPoint (currTouch, mask)) {
-									Tile theTile = Physics2D.OverlapPoint (currTouch, mask).GetComponent<Tile> ();
-									GameManager.Instance.painter.TryPaintTile (theTile, selectedColor);
+								Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch(0).position);
+								RaycastHit hit;
+								if (Physics.Raycast (ray, out hit, mask)) {
+									GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
 								}
 							} 
 							//If the distance has been exceeded, move the camera.
@@ -137,9 +141,10 @@ public class InputManager : MonoBehaviour {
 						} else if (state == Globals.InputState.Dragging) {
 							GameManager.Instance.cam.Pan(Input.GetTouch(0).deltaPosition);
 						} else if (state == Globals.InputState.Painting) {
-							if (Physics2D.OverlapPoint (currTouch, mask)) {
-								Tile theTile = Physics2D.OverlapPoint (currTouch, mask).GetComponent<Tile> ();
-								GameManager.Instance.painter.TryPaintTile (theTile, selectedColor);
+							Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch(0).position);
+							RaycastHit hit;
+							if (Physics.Raycast (ray, out hit, mask)) {
+								GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
 							}
 						}
 					}
@@ -152,17 +157,19 @@ public class InputManager : MonoBehaviour {
 						touchTime = 0;
 						if (state == Globals.InputState.Waiting) {
 							//Try to paint pixel here.
-							if (Physics2D.OverlapPoint (currTouch, mask)) {
-								Tile theTile = Physics2D.OverlapPoint (currTouch, mask).GetComponent<Tile> ();
-								GameManager.Instance.painter.TryPaintTile (theTile, selectedColor);
+							Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch(0).position);
+							RaycastHit hit;
+							if (Physics.Raycast (ray, out hit, mask)) {
+								GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
 							}
 						} else if (state == Globals.InputState.Dragging) {
 							//Put the camera to a final position.
 						} else if (state == Globals.InputState.Painting) {
 							//Try to paint last pixel here.
-							if (Physics2D.OverlapPoint (currTouch, mask)) {
-								Tile theTile = Physics2D.OverlapPoint (currTouch, mask).GetComponent<Tile> ();
-								GameManager.Instance.painter.TryPaintTile (theTile, selectedColor);
+							Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch(0).position);
+							RaycastHit hit;
+							if (Physics.Raycast (ray, out hit, mask)) {
+								GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
 							}
 						}
 						state = Globals.InputState.Waiting;

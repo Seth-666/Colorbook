@@ -16,10 +16,8 @@ public class Painter : MonoBehaviour {
 
 	public int[,] spriteGrid;
 	public int[,] progressGrid;
-	Tile[,] tileGrid;
 
-	public Sprite borderedTile;
-	public Sprite openTile;
+	public Texture2D mainTex;
 
 	public SpriteData level;
 
@@ -44,25 +42,31 @@ public class Painter : MonoBehaviour {
 		}
 	}
 
-	public void TryPaintTile(Tile tile, int col){
-		if (progressGrid [tile.pos.x, tile.pos.y] != col) {
-			if (spriteGrid [tile.pos.x, tile.pos.y] != col) {
-				//If it doesn't match the target color, paint it but not at full alpha.
-				tileGrid [tile.pos.x, tile.pos.y].render.color = new Color (colors [col].r, colors [col].g, colors [col].b, 0.5f);
-				//If it was the correct color previously, set the text again.
-				if (progressGrid [tile.pos.x, tile.pos.y] == spriteGrid [tile.pos.x, tile.pos.y]) {
-					tileGrid [tile.pos.x, tile.pos.y].myText.text = (spriteGrid [tile.pos.x, tile.pos.y]).ToString ();
-					tileGrid [tile.pos.x, tile.pos.y].render.sprite = borderedTile;
+	public void TryPaintTile(RaycastHit hit, int col){
+		int x = Mathf.FloorToInt (hit.textureCoord.x * mainTex.width);
+		int y = Mathf.FloorToInt (hit.textureCoord.y * mainTex.height);
+		if (spriteGrid [x, y] != -1) {
+			if (progressGrid [x, y] != col) {
+				if (spriteGrid [x, y] != col) {
+					//If it doesn't match the target color, paint it but not at full alpha.
+					mainTex.SetPixel (x, y, new Color (colors [col].r, colors [col].g, colors [col].b, 0.5f));
+					//If it was the correct color previously, set the text again.
+					if (progressGrid [x, y] == spriteGrid [x, y]) {
+						//tileGrid [tile.pos.x, tile.pos.y].myText.text = (spriteGrid [tile.pos.x, tile.pos.y]).ToString ();
+						//tileGrid [tile.pos.x, tile.pos.y].render.sprite = borderedTile;
+					} 
+					progressGrid [x, y] = col;
 				} 
-				progressGrid [tile.pos.x, tile.pos.y] = col;
-			} 
-			//If it IS the correct color. set the text to nothing and change the color.
-			else {
-				tileGrid [tile.pos.x, tile.pos.y].myText.text = "";
-				progressGrid [tile.pos.x, tile.pos.y] = col;
-				tileGrid [tile.pos.x, tile.pos.y].render.color = colors [col];
-				tileGrid [tile.pos.x, tile.pos.y].render.sprite = openTile;
+				//If it IS the correct color. set the text to nothing and change the color.
+				else {
+					//tileGrid [tile.pos.x, tile.pos.y].myText.text = "";
+					progressGrid [x, y] = col;
+					mainTex.SetPixel (x, y, colors [col]);
+					//tileGrid [tile.pos.x, tile.pos.y].render.color = colors [col];
+					//tileGrid [tile.pos.x, tile.pos.y].render.sprite = openTile;
+				}
 			}
+			mainTex.Apply ();
 		}
 	}
 
@@ -84,23 +88,37 @@ public class Painter : MonoBehaviour {
 	}
 
 	void RenderData(){
-		tileGrid = new Tile[level.xSize, level.ySize];
+		//tileGrid = new Tile[level.xSize, level.ySize];
 		GameObject parentObj = new GameObject ();
+		GameObject plane = Instantiate (GameManager.Instance.pool.basePlane);
+		Vector3 newScale = new Vector3 (level.xSize * 0.1f, 1, level.ySize * 0.1f);
+		plane.transform.localScale = newScale;
+		plane.transform.name = "Level";
+		Texture2D newTex = new Texture2D (level.xSize, level.ySize);
+		Color transCol = new Color (1, 1, 1, 0);
 		parentObj.name = "Tiles";
 		for (int xx = 0; xx < level.xSize; xx++) {
 			for (int yy = 0; yy < level.ySize; yy++) {
-				if (spriteGrid [xx, yy] >= 0) {
-					Tile newTile = GameManager.Instance.pool.GetTile ();
-					newTile.gameObject.SetActive (true);
-					newTile.transform.position = PosToVector2 (xx, yy);
-					tileGrid [xx, yy] = newTile;
-					newTile.pos.x = xx;
-					newTile.pos.y = yy;
-					newTile.transform.SetParent (parentObj.transform);
-					newTile.myText.text = (spriteGrid [xx, yy]).ToString ();
+				if (spriteGrid [xx, yy] == -1) {
+					newTex.SetPixel (xx, yy, transCol);
+				}
+				else if (spriteGrid [xx, yy] >= 0) {
+					newTex.SetPixel (xx, yy, colors [spriteGrid [xx, yy]]);
+					//Tile newTile = GameManager.Instance.pool.GetTile ();
+					//newTile.gameObject.SetActive (true);
+					//newTile.transform.position = PosToVector2 (xx, yy);
+					//tileGrid [xx, yy] = newTile;
+					//newTile.pos.x = xx;
+					//newTile.pos.y = yy;
+					//newTile.transform.SetParent (parentObj.transform);
+					//newTile.myText.text = (spriteGrid [xx, yy]).ToString ();
 				}
 			}
 		}
+		mainTex = newTex;
+		newTex.filterMode = FilterMode.Point;
+		newTex.Apply ();
+		plane.GetComponent<MeshRenderer> ().material.mainTexture = newTex;
 		RecolorAll ();
 	}
 
@@ -113,29 +131,34 @@ public class Painter : MonoBehaviour {
 					if (progressGrid [xx, yy] == 0) {
 						//Add case for whether or not its the current selcted color.
 						if (spriteGrid [xx, yy] == GameManager.Instance.input.selectedColor) {
-							tileGrid [xx, yy].render.color = selected;
-							tileGrid [xx, yy].myText.text = (spriteGrid [xx, yy]).ToString ();
+							mainTex.SetPixel (xx, yy, selected);
+							//tileGrid [xx, yy].render.color = selected;
+							//tileGrid [xx, yy].myText.text = (spriteGrid [xx, yy]).ToString ();
 						} else {
 							Color newCol = ToGrayScale(colors[spriteGrid[xx, yy]]);
 							newCol = Color.Lerp(newCol, Color.white, 0.5f);
-							tileGrid [xx, yy].render.color = newCol;
-							tileGrid [xx, yy].myText.text = (spriteGrid [xx, yy]).ToString ();
+							mainTex.SetPixel (xx, yy, newCol);
+							//tileGrid [xx, yy].render.color = newCol;
+							//tileGrid [xx, yy].myText.text = (spriteGrid [xx, yy]).ToString ();
 						}
 					}
 					//If the current color has been set, but isn't correct
 					//Color is half-alpha of the selected color.
 					else if (progressGrid [xx, yy] != spriteGrid [xx, yy]) {
-						tileGrid [xx, yy].render.color = new Color (colors [progressGrid [xx, yy]].r, colors [progressGrid [xx, yy]].g, colors [progressGrid [xx, yy]].b, 0.5f);
-						tileGrid [xx, yy].myText.text = (spriteGrid [xx, yy]).ToString ();
+						mainTex.SetPixel(xx, yy, new Color (colors [progressGrid [xx, yy]].r, colors [progressGrid [xx, yy]].g, colors [progressGrid [xx, yy]].b, 0.5f));
+						//tileGrid [xx, yy].render.color = new Color (colors [progressGrid [xx, yy]].r, colors [progressGrid [xx, yy]].g, colors [progressGrid [xx, yy]].b, 0.5f);
+						//tileGrid [xx, yy].myText.text = (spriteGrid [xx, yy]).ToString ();
 					}
 					//If the current color has been set and is correct
 					else if (progressGrid [xx, yy] == spriteGrid [xx, yy]) {
-						tileGrid [xx, yy].render.color = colors [progressGrid [xx, yy]];
-						tileGrid [xx, yy].myText.text = "";
+						mainTex.SetPixel (xx, yy, colors [progressGrid [xx, yy]]);
+						//tileGrid [xx, yy].render.color = colors [progressGrid [xx, yy]];
+						//tileGrid [xx, yy].myText.text = "";
 					}
 				}
 			}
 		}
+		mainTex.Apply ();
 	}
 
 	Color ToGrayScale(Color orig){

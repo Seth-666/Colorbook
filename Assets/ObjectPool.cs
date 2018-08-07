@@ -6,6 +6,7 @@ public class ObjectPool : MonoBehaviour {
 
 	public Tile[] pool;
 	public Tile tile;
+	public GameObject basePlane;
 
 	bool poolEmpty = false;
 

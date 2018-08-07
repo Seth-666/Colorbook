@@ -32,7 +32,6 @@ public class SpriteSaver : MonoBehaviour {
 	public string[] tags;
 
 	public GameObject obj;
-	public bool testCreate = false;
 	public Texture2D createdTexture;
 
 	void Update(){
@@ -52,53 +51,6 @@ public class SpriteSaver : MonoBehaviour {
 			renderData = false;
 			RenderData ();
 		}
-		if (testCreate) {
-			testCreate = false;
-			TestCreate ();
-		}
-		if (Input.GetMouseButtonDown (0)) {
-			RaycastHit hit;
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			Debug.DrawRay (ray.origin, ray.direction * 10, Color.green, 10);
-			if (Physics.Raycast (ray, out hit)) {
-
-				int x =	Mathf.FloorToInt(hit.textureCoord.x * createdTexture.width);
-				int y = Mathf.FloorToInt(hit.textureCoord.y * createdTexture.height);
-				if (spriteGrid [x, y] > 0) {
-					createdTexture.SetPixel (x, y, Color.black);
-				}
-
-				//Vector2 hitPoint = hit.textureCoord;
-				//hitPoint.x = Mathf.FloorToInt(hitPoint.x * createdTexture.width);
-				//hitPoint.y = Mathf.FloorToInt(hitPoint.y * createdTexture.height);
-				//if (spriteGrid [(int)hitPoint.x, (int)hitPoint.y] > 0) {
-				//	createdTexture.SetPixel ((int)hitPoint.x, (int)hitPoint.y, Color.black);
-				//}
-				createdTexture.Apply ();
-			}
-		}
-	}
-
-	void TestCreate(){
-		GameObject newObj = Instantiate (obj);
-		Vector3 newScale = new Vector3 (xSize * 0.01f, 1, ySize * 0.01f);
-		newObj.transform.localScale = newScale;
-		newObj.transform.position = Vector3.zero;
-		Texture2D tex = new Texture2D (xSize, ySize);
-		Color transCol = new Color (1, 1, 1, 0);
-		for (int xx = 0; xx < xSize; xx++) {
-			for (int yy = 0; yy < ySize; yy++) {
-				if (spriteGrid [xx, yy] == -1) {
-					tex.SetPixel (xx, yy, transCol);
-				} else {
-					tex.SetPixel (xx, yy, colors [spriteGrid [xx, yy]]);
-				}
-			}
-		}
-		tex.filterMode = FilterMode.Point;
-		tex.Apply ();
-		createdTexture = tex;
-		newObj.GetComponent<MeshRenderer> ().material.mainTexture = tex;
 	}
 
 	void GetData(){
@@ -216,24 +168,25 @@ public class SpriteSaver : MonoBehaviour {
 	}
 
 	void RenderData(){
-		GameObject[] tiles = GameObject.FindGameObjectsWithTag ("Tile");
-		tileGrid = new Tile[xSize, ySize];
-		GameObject parentObj = new GameObject ();
-		parentObj.name = "Tiles";
-		for (int xx = 0; xx < tiles.Length; xx++) {
-			Destroy (tiles [xx]);
-		}
+		GameObject newObj = Instantiate (obj);
+		Vector3 newScale = new Vector3 (xSize * 0.1f, 1, ySize * 0.1f);
+		newObj.transform.localScale = newScale;
+		newObj.transform.position = Vector3.zero;
+		Texture2D tex = new Texture2D (xSize, ySize);
+		Color transCol = new Color (1, 1, 1, 0);
 		for (int xx = 0; xx < xSize; xx++) {
 			for (int yy = 0; yy < ySize; yy++) {
-				if (spriteGrid [xx, yy] >= 0) {
-					Tile newTile = Instantiate (tile);
-					newTile.transform.position = PosToVector2 (xx, yy);
-					tileGrid [xx, yy] = newTile;
-					newTile.transform.SetParent (parentObj.transform);
-					newTile.myText.text = (spriteGrid [xx, yy]).ToString ();
+				if (spriteGrid [xx, yy] == -1) {
+					tex.SetPixel (xx, yy, transCol);
+				} else {
+					tex.SetPixel (xx, yy, colors [spriteGrid [xx, yy]]);
 				}
 			}
 		}
+		tex.filterMode = FilterMode.Point;
+		tex.Apply ();
+		createdTexture = tex;
+		newObj.GetComponent<MeshRenderer> ().material.mainTexture = tex;
 		RecolorAll ();
 	}
 
@@ -241,14 +194,14 @@ public class SpriteSaver : MonoBehaviour {
 		for (int xx = 0; xx < xSize; xx++) {
 			for (int yy = 0; yy < ySize; yy++) {
 				if (spriteGrid [xx, yy] >= 0) {
-					//float lerpVal = Mathf.InverseLerp (0, colors.Count - 1, spriteGrid [xx, yy]);
-					//Color newCol = Color.Lerp (startCol, endCol, lerpVal);
 					Color greyCol = ToGrayScale(colors[spriteGrid[xx, yy]]);//newCol;
-					greyCol = Color.Lerp(greyCol, Color.white, 0.75f);
-					tileGrid [xx, yy].render.color = greyCol;
+					greyCol = Color.Lerp(greyCol, Color.white, 0.5f);
+					createdTexture.SetPixel (xx, yy, greyCol);
+					//tileGrid [xx, yy].render.color = greyCol;
 				}
 			}
 		}
+		createdTexture.Apply ();
 	}
 
 	Color ToGrayScale(Color orig){

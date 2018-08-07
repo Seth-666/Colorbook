@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour {
 
-	public SpriteRenderer render;
 	public UnityEngine.UI.Text myText;
-	public Globals.Coord pos;
 
 }
