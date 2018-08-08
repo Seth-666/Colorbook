@@ -7,8 +7,6 @@ using System.IO;
 
 public class Painter : MonoBehaviour {
 
-	public bool updateColors;
-
 	public Color[] colors;
 	public Color selected;
 
@@ -34,13 +32,6 @@ public class Painter : MonoBehaviour {
 			RenderData ();
 		} else {
 			Debug.Log ("No level data loaded.");
-		}
-	}
-
-	void Update(){
-		if (updateColors) {
-			updateColors = false;
-			RecolorAll ();
 		}
 	}
 
@@ -187,14 +178,14 @@ public class Painter : MonoBehaviour {
 		Vector3 newScale = new Vector3 (level.xSize * tileSize, 1, level.ySize * tileSize);
 		plane.transform.localScale = newScale;
 		plane.transform.name = "Level";
-		Texture2D newTex = new Texture2D (level.xSize, level.ySize);
+		Texture2D newTex = new Texture2D (level.xSize, level.ySize, TextureFormat.RGBA32, false);
 		Color transCol = new Color (1, 1, 1, 0);
 		for (int xx = 0; xx < level.xSize; xx++) {
 			for (int yy = 0; yy < level.ySize; yy++) {
 				if (spriteGrid [xx, yy] == -1) {
 					newTex.SetPixel (xx, yy, transCol);
 				}
-				else if (spriteGrid [xx, yy] >= 0) {
+				else if (spriteGrid [xx, yy] > 0) {
 					newTex.SetPixel (xx, yy, colors [spriteGrid [xx, yy]]);
 				}
 			}
@@ -208,7 +199,7 @@ public class Painter : MonoBehaviour {
 		RecolorAll ();
 	}
 
-	void RecolorAll(){
+	public void RecolorAll(){
 		for (int xx = 0; xx < level.xSize; xx++) {
 			for (int yy = 0; yy < level.ySize; yy++) {
 				//If the tile isn't a blank tile
@@ -220,7 +211,7 @@ public class Painter : MonoBehaviour {
 							mainTex.SetPixel (xx, yy, selected);
 						} else {
 							Color newCol = Globals.ToGrayScale(colors[spriteGrid[xx, yy]]);
-							newCol = Color.Lerp(newCol, Color.white, 0.5f);
+							//newCol = Color.Lerp(newCol, Color.white, 0.25f);
 							mainTex.SetPixel (xx, yy, newCol);
 						}
 					}

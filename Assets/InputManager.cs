@@ -99,8 +99,6 @@ public class InputManager : MonoBehaviour {
 						if (Physics.Raycast (ray, out hit, mask)) {
 							GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
 						}
-					} else if (state == Globals.InputState.Dragging) {
-						//Put the camera to a final position.
 					} else if (state == Globals.InputState.Painting) {
 						//Try to paint last pixel here.
 						Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.mousePosition);
@@ -172,9 +170,8 @@ public class InputManager : MonoBehaviour {
 							if (Physics.Raycast (ray, out hit, mask)) {
 								GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
 							}
-						} else if (state == Globals.InputState.Dragging) {
-							//Put the camera to a final position.
-						} else if (state == Globals.InputState.Painting) {
+						}
+						else if (state == Globals.InputState.Painting) {
 							//Try to paint last pixel here.
 							Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.GetTouch(0).position);
 							Debug.DrawRay (ray.origin, ray.direction * 10, Color.green, 3);
