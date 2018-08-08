@@ -12,6 +12,8 @@ public class CameraController : MonoBehaviour {
 
 	public float currZoom;
 	public AnimationCurve panRamp;
+	public AnimationCurve zoomRamp;
+	public int textZoom;
 
 	public Camera cam;
 
@@ -46,22 +48,24 @@ public class CameraController : MonoBehaviour {
 	}
 
 	public void Zoom(float amount){
+		float lastCamSetting = cam.orthographicSize;
 		float camSetting = cam.orthographicSize += (amount * zoomSpeed);
 		camSetting = Mathf.Clamp (camSetting, minZoom, maxZoom);
 		cam.orthographicSize = camSetting;
 		currZoom = camSetting;
 		if (GameManager.Instance.input.isMobile) {
 			panSpeed = panRamp.Evaluate (currZoom);
+			zoomSpeed = zoomRamp.Evaluate (currZoom);
 		}
-		if (currZoom < 20 && !GameManager.Instance.pool.gridActive) {
-			GameManager.Instance.painter.GenerateGrid ();
-		} else if (currZoom >= 20 && GameManager.Instance.pool.gridActive) {
+		if (lastCamSetting >= textZoom && camSetting < textZoom) {
+			GameManager.Instance.painter.AdjustGrid();
+		} else if (lastCamSetting < textZoom && camSetting >= textZoom) {
 			GameManager.Instance.pool.DisableAll ();
 		}
 	}
 
 	public void Pan(Vector3 dir){
-		if (currZoom >= 20) {
+		if (currZoom >= textZoom) {
 			if (GameManager.Instance.pool.gridActive) {
 				GameManager.Instance.pool.DisableAll ();
 			}
@@ -71,7 +75,7 @@ public class CameraController : MonoBehaviour {
 		targetPos.x = Mathf.Clamp (targetPos.x, minX, maxX);
 		targetPos.y = Mathf.Clamp (targetPos.y, minY, maxY);
 		cam.transform.position = targetPos;
-		if (currZoom < 20) {
+		if (currZoom < textZoom) {
 			GameManager.Instance.painter.AdjustGrid ();
 		}
 	}

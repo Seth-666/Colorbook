@@ -25,6 +25,11 @@ public class Painter : MonoBehaviour {
 	public int yScope;
 
 	void Start(){
+		StartCoroutine (LateStart ());
+	}
+
+	IEnumerator LateStart(){
+		yield return null;
 		textGrid = new Tile[level.xSize, level.ySize];
 		textActive = new bool[level.xSize, level.ySize];
 		if (level != null) {
@@ -35,14 +40,15 @@ public class Painter : MonoBehaviour {
 		}
 	}
 
-	public void ClearText(){
-		textGrid = new Tile[level.xSize, level.ySize];
-		textActive = new bool[level.xSize, level.ySize];
-	}
+	//public void ClearText(){
+	//	textGrid = new Tile[level.xSize, level.ySize];
+	//	textActive = new bool[level.xSize, level.ySize];
+	//}
 
 	public void GenerateGrid(){
+		Debug.Log ("Grid generating.");
 		if (!GameManager.Instance.pool.gridActive) {
-			if (GameManager.Instance.cam.currZoom < 20) {
+			if (GameManager.Instance.cam.currZoom < GameManager.Instance.cam.textZoom) {
 				Ray ray = new Ray (GameManager.Instance.cam.cam.transform.position, GameManager.Instance.cam.cam.transform.forward * 10);
 				RaycastHit hit;
 				if (Physics.Raycast (ray, out hit, GameManager.Instance.input.mask)) {
@@ -94,7 +100,6 @@ public class Painter : MonoBehaviour {
 											textGrid [xx, yy].myText.text = spriteGrid [xx, yy].ToString ();
 										} else {
 											//If it is, disable the object.
-											//textGrid [xx, yy].gameObject.SetActive (false);
 											GameManager.Instance.pool.ReturnTile(textGrid[xx, yy]);
 											textGrid [xx, yy] = null;
 											textActive[xx, yy] = false;
@@ -102,7 +107,6 @@ public class Painter : MonoBehaviour {
 									}
 								} else {
 									//If it's not in the range, disable it.
-									//textGrid [xx, yy].gameObject.SetActive (false);
 									GameManager.Instance.pool.ReturnTile(textGrid[xx, yy]);
 									textGrid [xx, yy] = null;
 									textActive[xx, yy] = false;
@@ -118,6 +122,7 @@ public class Painter : MonoBehaviour {
 											Tile newTile = GameManager.Instance.pool.GetTile ();
 											newTile.transform.position = PosToVector2 (xx, yy);
 											textGrid [xx, yy] = newTile;
+											newTile.myText.text = spriteGrid [xx, yy].ToString ();
 											textActive [xx, yy] = true;
 										}
 									}

@@ -5,6 +5,14 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
+	public Slider zoomLevel;
+	public Text zoomText;
+
+	public void SetZoom(){
+		zoomText.text = zoomLevel.value.ToString ();
+		GameManager.Instance.cam.zoomSpeed = zoomLevel.value;
+	}
+
 	public void PrevColor(){
 		int selCol = GameManager.Instance.input.selectedColor - 1;
 		if (selCol < 1) {
