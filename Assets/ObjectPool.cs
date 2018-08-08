@@ -4,28 +4,57 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour {
 
-	public Tile[] pool;
+	public List<Tile> pool;
+	public List<bool> activeState;
 	public Tile tile;
 	public GameObject basePlane;
+	public GameObject tileParent;
 
-	bool poolEmpty = false;
+	public bool gridActive = false;
+
+	void Awake(){
+		for (int xx = 0; xx < pool.Count; xx++) {
+			pool [xx].myIndex = xx;
+			activeState.Add (false);
+		}
+	}
+
+	public void DisableAll(){
+		GameManager.Instance.painter.ClearText ();
+		if(gridActive){
+			for (int xx = 0; xx < pool.Count; xx++) {
+				pool[xx].transform.position = new Vector2(10000, 10000);
+				activeState [xx] = false;
+			}
+			gridActive = false;
+		}
+	}
+
+	public void ReturnTile(Tile tile){
+		activeState [tile.myIndex] = false;
+		tile.transform.position = new Vector2(10000, 10000);
+	}
 
 	public Tile GetTile(){
 		Tile ret = null;
-		if (!poolEmpty) {
-			for (int xx = 0; xx < pool.Length; xx++) {
-				if (!pool [xx].gameObject.activeSelf) {
-					ret = pool [xx];
-					break;
-				}
-			}
-			if (ret == null) {
-				poolEmpty = true;
-				ret = Instantiate (tile);
+		bool found = false;
+		int index = 0;
+		for (int xx = 0; xx < pool.Count; xx++) {
+			if(!activeState[xx]){
+				found = true;
+				index = xx;
+				break;
 			}
 		}
-		else{
+		if (!found) {
 			ret = Instantiate (tile);
+			ret.myIndex = pool.Count;
+			pool.Add (ret);
+			activeState.Add (true);
+			ret.transform.SetParent (tileParent.transform);
+		} else {
+			ret = pool [index];
+			activeState [index] = true;
 		}
 		return ret;
 	}

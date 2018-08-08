@@ -17,15 +17,18 @@ public class InputManager : MonoBehaviour {
 	public float distMax;
 
 	Vector3 lastTouch;
-	Vector3 currTouch;
+	public Vector3 currTouch;
 
-	bool isMobile = false;
+	public bool isMobile = false;
 
 	public bool inputOn = false;
 
 	void Start(){
 		if (Application.isMobilePlatform) {
 			isMobile = true;
+		} else {
+			GameManager.Instance.cam.zoomSpeed = 10;
+			GameManager.Instance.cam.panSpeed = 10;
 		}
 	}
 
@@ -43,19 +46,20 @@ public class InputManager : MonoBehaviour {
 			if (Input.GetMouseButtonDown (0)) {
 				if (!inputOn) {
 					inputOn = true;
-					currTouch = Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
+					currTouch = GameManager.Instance.cam.cam.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, GameManager.Instance.cam.cam.transform.position.z));
 					touchTime += Time.deltaTime;
 				}
 			}
 			if (Input.GetMouseButton (0)) {
 				if (inputOn) {
 					lastTouch = currTouch;
-					currTouch = Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
+					currTouch = GameManager.Instance.cam.cam.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, GameManager.Instance.cam.cam.transform.position.z));
 					if (state == Globals.InputState.Waiting) {
 						touchTime += Time.deltaTime;
 						if (touchTime >= touchMax) {
 							state = Globals.InputState.Painting;
-							Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+							Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.mousePosition);
+							Debug.DrawRay (ray.origin, ray.direction * 10, Color.green, 3);
 							RaycastHit hit;
 							if (Physics.Raycast (ray, out hit, mask)) {
 								GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
@@ -72,7 +76,8 @@ public class InputManager : MonoBehaviour {
 						Vector3 delta = currTouch - lastTouch;
 						GameManager.Instance.cam.Pan (delta);
 					} else if (state == Globals.InputState.Painting) {
-						Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+						Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.mousePosition);
+						Debug.DrawRay (ray.origin, ray.direction * 10, Color.green, 3);
 						RaycastHit hit;
 						if (Physics.Raycast (ray, out hit, mask)) {
 							GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
@@ -83,12 +88,13 @@ public class InputManager : MonoBehaviour {
 			if (Input.GetMouseButtonUp (0)) {
 				if (inputOn) {
 					lastTouch = currTouch;
-					currTouch = Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
+					currTouch = GameManager.Instance.cam.cam.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, GameManager.Instance.cam.cam.transform.position.z));
 					inputOn = false;
 					touchTime = 0;
 					if (state == Globals.InputState.Waiting) {
 						//Try to paint pixel here.
-						Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+						Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.mousePosition);
+						Debug.DrawRay (ray.origin, ray.direction * 10, Color.green, 3);
 						RaycastHit hit;
 						if (Physics.Raycast (ray, out hit, mask)) {
 							GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
@@ -97,7 +103,8 @@ public class InputManager : MonoBehaviour {
 						//Put the camera to a final position.
 					} else if (state == Globals.InputState.Painting) {
 						//Try to paint last pixel here.
-						Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+						Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.mousePosition);
+						Debug.DrawRay (ray.origin, ray.direction * 10, Color.green, 3);
 						RaycastHit hit;
 						if (Physics.Raycast (ray, out hit, mask)) {
 							GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
@@ -113,19 +120,20 @@ public class InputManager : MonoBehaviour {
 				if (Input.GetTouch (0).phase == TouchPhase.Began) {
 					if (!inputOn) {
 						inputOn = true;
-						currTouch = Camera.main.ScreenToWorldPoint (new Vector3 (Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, Camera.main.transform.position.z));
+						currTouch = GameManager.Instance.cam.cam.ScreenToWorldPoint (new Vector3 (Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, GameManager.Instance.cam.cam.transform.position.z));
 						touchTime += Time.deltaTime;
 					}
 				}
 				if (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(0).phase == TouchPhase.Stationary) {
 					if (inputOn) {
 						lastTouch = currTouch;
-						currTouch = Camera.main.ScreenToWorldPoint (new Vector3 (Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, Camera.main.transform.position.z));
+						currTouch = GameManager.Instance.cam.cam.ScreenToWorldPoint (new Vector3 (Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, GameManager.Instance.cam.cam.transform.position.z));
 						if (state == Globals.InputState.Waiting) {
 							touchTime += Time.deltaTime;
 							if (touchTime >= touchMax) {
 								state = Globals.InputState.Painting;
-								Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch(0).position);
+								Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.GetTouch(0).position);
+								Debug.DrawRay (ray.origin, ray.direction * 10, Color.green, 3);
 								RaycastHit hit;
 								if (Physics.Raycast (ray, out hit, mask)) {
 									GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
@@ -141,7 +149,8 @@ public class InputManager : MonoBehaviour {
 						} else if (state == Globals.InputState.Dragging) {
 							GameManager.Instance.cam.Pan(Input.GetTouch(0).deltaPosition);
 						} else if (state == Globals.InputState.Painting) {
-							Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch(0).position);
+							Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.GetTouch(0).position);
+							Debug.DrawRay (ray.origin, ray.direction * 10, Color.green, 3);
 							RaycastHit hit;
 							if (Physics.Raycast (ray, out hit, mask)) {
 								GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
@@ -152,12 +161,13 @@ public class InputManager : MonoBehaviour {
 				if (Input.GetTouch(0).phase == TouchPhase.Ended || Input.GetTouch(0).phase == TouchPhase.Canceled) {
 					if (inputOn) {
 						lastTouch = currTouch;
-						currTouch = Camera.main.ScreenToWorldPoint (new Vector3 (Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, Camera.main.transform.position.z));
+						currTouch = GameManager.Instance.cam.cam.ScreenToWorldPoint (new Vector3 (Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, GameManager.Instance.cam.cam.transform.position.z));
 						inputOn = false;
 						touchTime = 0;
 						if (state == Globals.InputState.Waiting) {
 							//Try to paint pixel here.
-							Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch(0).position);
+							Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.GetTouch(0).position);
+							Debug.DrawRay (ray.origin, ray.direction * 10, Color.green, 3);
 							RaycastHit hit;
 							if (Physics.Raycast (ray, out hit, mask)) {
 								GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
@@ -166,7 +176,8 @@ public class InputManager : MonoBehaviour {
 							//Put the camera to a final position.
 						} else if (state == Globals.InputState.Painting) {
 							//Try to paint last pixel here.
-							Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch(0).position);
+							Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.GetTouch(0).position);
+							Debug.DrawRay (ray.origin, ray.direction * 10, Color.green, 3);
 							RaycastHit hit;
 							if (Physics.Raycast (ray, out hit, mask)) {
 								GameManager.Instance.painter.TryPaintTile (hit, selectedColor);

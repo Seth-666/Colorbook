@@ -194,34 +194,13 @@ public class SpriteSaver : MonoBehaviour {
 		for (int xx = 0; xx < xSize; xx++) {
 			for (int yy = 0; yy < ySize; yy++) {
 				if (spriteGrid [xx, yy] >= 0) {
-					Color greyCol = ToGrayScale(colors[spriteGrid[xx, yy]]);//newCol;
+					Color greyCol = Globals.ToGrayScale(colors[spriteGrid[xx, yy]]);
 					greyCol = Color.Lerp(greyCol, Color.white, 0.5f);
 					createdTexture.SetPixel (xx, yy, greyCol);
-					//tileGrid [xx, yy].render.color = greyCol;
 				}
 			}
 		}
 		createdTexture.Apply ();
-	}
-
-	Color ToGrayScale(Color orig){
-		Color ret = new Color ();
-		orig.r += (orig.r * 0.5f);
-		orig.g += (orig.g * 0.5f);
-		orig.b += (orig.b * 0.5f);
-		Color32 col = new Color (orig.r, orig.g, orig.b, 255);
-		int p = ((256 * 256 + col.r) * 256 + col.b) * 256 + col.g;
-		int b = p % 256;
-		p = Mathf.FloorToInt (p / 256);
-		int g = p % 256;
-		p = Mathf.FloorToInt(p / 256);
-		int r = p % 256;
-		float l = (0.2126f * r / 255f) + 0.7152f * (g / 255f) + 0.0722f * (b / 255f);
-		ret.r = l;
-		ret.g = l;
-		ret.b = l;
-		ret.a = 1;
-		return ret;
 	}
 
 	public Vector2 PosToVector2(int xx, int yy){
