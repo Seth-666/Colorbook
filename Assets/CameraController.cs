@@ -60,14 +60,14 @@ public class CameraController : MonoBehaviour {
 		if (lastCamSetting >= textZoom && camSetting < textZoom) {
 			GameManager.Instance.painter.AdjustGrid();
 		} else if (lastCamSetting < textZoom && camSetting >= textZoom) {
-			GameManager.Instance.pool.DisableAll ();
+			GameManager.Instance.painter.DisableAllText ();
 		}
 	}
 
 	public void Pan(Vector3 dir){
 		if (currZoom >= textZoom) {
 			if (GameManager.Instance.pool.gridActive) {
-				GameManager.Instance.pool.DisableAll ();
+				GameManager.Instance.painter.DisableAllText ();
 			}
 		}
 		Vector3 movement = new Vector3 (dir.x * (panSpeed * Time.deltaTime), dir.y * (panSpeed * Time.deltaTime), 0);

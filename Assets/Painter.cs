@@ -75,6 +75,18 @@ public class Painter : MonoBehaviour {
 		}
 	}
 
+	public void DisableAllText(){
+		for (int xx = 0; xx < level.xSize; xx++) {
+			for (int yy = 0; yy < level.ySize; yy++) {
+				if (textActive [xx, yy]) {
+					GameManager.Instance.pool.ReturnTile (textGrid [xx, yy]);
+					textGrid [xx, yy] = null;
+					textActive[xx, yy] = false;
+				}
+			}
+		}
+	}
+
 	public void AdjustGrid(){
 		if (GameManager.Instance.pool.gridActive) {
 			Ray ray = new Ray (GameManager.Instance.cam.cam.transform.position, GameManager.Instance.cam.cam.transform.forward * 10);

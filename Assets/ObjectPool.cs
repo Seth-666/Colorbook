@@ -4,58 +4,38 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour {
 
-	//Try queue or stack instead.
+	//Try queue
 
-	public List<Tile> pool;
-	public List<bool> activeState;
+	public Tile[] allTiles;
+
+	Queue<Tile> inactiveTiles;
+
 	public Tile tile;
 	public GameObject basePlane;
 	public GameObject tileParent;
 
 	public bool gridActive = false;
 
-	int listCount;
-
 	void Awake(){
-		listCount = pool.Count;
-		for (int xx = 0; xx < listCount; xx++) {
-			pool [xx].myIndex = xx;
-			activeState.Add (false);
-		}
-	}
-
-	public void DisableAll(){
-		for (int xx = 0; xx < listCount; xx++) {
-			pool [xx].myText.text = "";	
+		inactiveTiles = new Queue<Tile> ();
+		for (int xx = 0; xx < allTiles.Length; xx++) {
+			inactiveTiles.Enqueue (allTiles [xx]);
 		}
 	}
 
 	public void ReturnTile(Tile tile){
-		activeState [tile.myIndex] = false;
 		tile.myText.text = "";
+		inactiveTiles.Enqueue (tile);
 	}
 
 	public Tile GetTile(){
 		Tile ret = null;
-		bool found = false;
-		int index = 0;
-		for (int xx = 0; xx < listCount; xx++) {
-			if(!activeState[xx]){
-				found = true;
-				index = xx;
-				break;
-			}
+		if (inactiveTiles.Count > 0) {
+			ret = inactiveTiles.Dequeue ();
 		}
-		if (!found) {
+		else{
 			ret = Instantiate (tile);
-			ret.myIndex = listCount;
-			pool.Add (ret);
-			listCount = pool.Count;
-			activeState.Add (true);
 			ret.transform.SetParent (tileParent.transform);
-		} else {
-			ret = pool [index];
-			activeState [index] = true;
 		}
 		return ret;
 	}
