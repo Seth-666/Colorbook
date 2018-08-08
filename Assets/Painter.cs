@@ -18,7 +18,6 @@ public class Painter : MonoBehaviour {
 	bool[,] textActive;
 
 	public Texture2D mainTex;
-
 	public SpriteData level;
 
 	public int xScope;
@@ -40,13 +39,7 @@ public class Painter : MonoBehaviour {
 		}
 	}
 
-	//public void ClearText(){
-	//	textGrid = new Tile[level.xSize, level.ySize];
-	//	textActive = new bool[level.xSize, level.ySize];
-	//}
-
 	public void GenerateGrid(){
-		Debug.Log ("Grid generating.");
 		if (!GameManager.Instance.pool.gridActive) {
 			if (GameManager.Instance.cam.currZoom < GameManager.Instance.cam.textZoom) {
 				Ray ray = new Ray (GameManager.Instance.cam.cam.transform.position, GameManager.Instance.cam.cam.transform.forward * 10);
@@ -144,7 +137,8 @@ public class Painter : MonoBehaviour {
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			GenerateGrid ();
 		}
 	}
