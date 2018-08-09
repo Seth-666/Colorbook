@@ -18,6 +18,7 @@ public class Painter : MonoBehaviour {
 	bool[,] textActive;
 
 	public Texture2D mainTex;
+
 	public SpriteData level;
 
 	public int xScope;
@@ -39,6 +40,11 @@ public class Painter : MonoBehaviour {
 		}
 	}
 
+	//public void ClearText(){
+	//	textGrid = new Tile[level.xSize, level.ySize];
+	//	textActive = new bool[level.xSize, level.ySize];
+	//}
+
 	public void GenerateGrid(){
 		if (!GameManager.Instance.pool.gridActive) {
 			if (GameManager.Instance.cam.currZoom < GameManager.Instance.cam.textZoom) {
@@ -57,6 +63,7 @@ public class Painter : MonoBehaviour {
 										textActive [xx, yy] = true;
 										newTile.transform.position = PosToVector2 (xx, yy);
 										newTile.myText.text = spriteGrid [xx, yy].ToString ();
+										//newTile.myText.
 									}
 								}
 							}
@@ -83,7 +90,6 @@ public class Painter : MonoBehaviour {
 	public void AdjustGrid(){
 		if (GameManager.Instance.pool.gridActive) {
 			Ray ray = new Ray (GameManager.Instance.cam.cam.transform.position, GameManager.Instance.cam.cam.transform.forward * 10);
-			Debug.DrawRay (ray.origin, ray.direction * 100, Color.green, 3);
 			RaycastHit hit;
 			//Get extents of grid check.
 			//Check whole grid for any tiles outside of this range and disable them.
@@ -137,8 +143,7 @@ public class Painter : MonoBehaviour {
 					}
 				}
 			}
-		}
-		else {
+		} else {
 			GenerateGrid ();
 		}
 	}
@@ -189,6 +194,7 @@ public class Painter : MonoBehaviour {
 		Vector3 newScale = new Vector3 (level.xSize * tileSize, 1, level.ySize * tileSize);
 		plane.transform.localScale = newScale;
 		plane.transform.name = "Level";
+		plane.transform.position = new Vector3 (0, 0, 5);
 		Texture2D newTex = new Texture2D (level.xSize, level.ySize, TextureFormat.RGBA32, false);
 		Color transCol = new Color (1, 1, 1, 0);
 		for (int xx = 0; xx < level.xSize; xx++) {

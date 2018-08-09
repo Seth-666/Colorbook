@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour {
 
-	public UnityEngine.UI.Text myText;
+	//public UnityEngine.UI.Text myText;
+	public TextMesh myText;
 
 }

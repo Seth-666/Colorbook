@@ -191,6 +191,7 @@ public class InputManager : MonoBehaviour {
 
 				GameManager.Instance.cam.Zoom(deltaMagDiff);
 			}
+
 		}
 	}
 
