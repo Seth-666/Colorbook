@@ -4,10 +4,25 @@ using UnityEngine;
 
 public class Globals : MonoBehaviour {
 
+	public enum UIState{
+		Idle,
+		BrushPicker,
+		ColorPicker,
+		Busy,
+		Paused
+	}
+
+	public enum Brush{
+		Small,
+		Medium,
+		Large
+	}
+
 	public enum InputState{
 		Waiting,
 		Painting,
-		Dragging
+		Dragging,
+		Busy
 	}
 
 	public struct Coord{
@@ -17,6 +32,30 @@ public class Globals : MonoBehaviour {
 			x = xx;
 			y = yy;
 		}
+	}
+
+	public static Coord[] GetMediumBrush(int x, int y){
+		Coord[] ret = new Coord[5];
+		ret [0] = new Coord (x, y);
+		ret [1] = new Coord (x - 1, y);
+		ret [2] = new Coord (x + 1, y);
+		ret [3] = new Coord (x, y + 1);
+		ret [4] = new Coord (x, y - 1);
+		return ret;
+	}
+
+	public static Coord[] GetLargeBrush(int x, int y){
+		Coord[] ret = new Coord[9];
+		ret [0] = new Coord (x, y);
+		ret [1] = new Coord (x - 1, y + 1);
+		ret [2] = new Coord (x, y + 1);
+		ret [3] = new Coord (x + 1, y + 1);
+		ret [4] = new Coord (x - 1, y);
+		ret [5] = new Coord (x + 1, y);
+		ret [6] = new Coord (x - 1, y - 1);
+		ret [7] = new Coord (x, y - 1);
+		ret [8] = new Coord (x + 1, y - 1);
+		return ret;
 	}
 
 	//Generic method for turning a 2D array into a 1D array.

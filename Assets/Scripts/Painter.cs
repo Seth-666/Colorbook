@@ -38,12 +38,8 @@ public class Painter : MonoBehaviour {
 		} else {
 			Debug.Log ("No level data loaded.");
 		}
+		GameManager.Instance.ui.InitializeUI ();
 	}
-
-	//public void ClearText(){
-	//	textGrid = new Tile[level.xSize, level.ySize];
-	//	textActive = new bool[level.xSize, level.ySize];
-	//}
 
 	public void GenerateGrid(){
 		if (!GameManager.Instance.pool.gridActive) {
@@ -63,7 +59,6 @@ public class Painter : MonoBehaviour {
 										textActive [xx, yy] = true;
 										newTile.transform.position = PosToVector2 (xx, yy);
 										newTile.myText.text = spriteGrid [xx, yy].ToString ();
-										//newTile.myText.
 									}
 								}
 							}
@@ -151,24 +146,54 @@ public class Painter : MonoBehaviour {
 	public void TryPaintTile(RaycastHit hit, int col){
 		int x = Mathf.FloorToInt (hit.textureCoord.x * mainTex.width);
 		int y = Mathf.FloorToInt (hit.textureCoord.y * mainTex.height);
-		if (spriteGrid [x, y] != -1) {
-			if (progressGrid [x, y] != col) {
-				if (spriteGrid [x, y] != col) {
-					//If it doesn't match the target color, paint it but not at full alpha.
-					mainTex.SetPixel (x, y, new Color (colors [col].r, colors [col].g, colors [col].b, 0.5f));
-					//If it was the correct color previously, set the text again.
-					if (progressGrid [x, y] == spriteGrid [x, y]) {
-					} 
-					progressGrid [x, y] = col;
-				}
-				//If it IS the correct color. set the text to nothing and change the color.
-				else {
-					progressGrid [x, y] = col;
-					mainTex.SetPixel (x, y, colors [col]);
+		if (GameManager.Instance.input.brush == Globals.Brush.Small) {
+			if (spriteGrid [x, y] != -1) {
+				if (progressGrid [x, y] != col) {
+					if (spriteGrid [x, y] != col) {
+						//If it doesn't match the target color, paint it but not at full alpha.
+						mainTex.SetPixel (x, y, new Color (colors [col].r, colors [col].g, colors [col].b, 0.5f));
+						//If it was the correct color previously, set the text again.
+						if (progressGrid [x, y] == spriteGrid [x, y]) {
+						} 
+						progressGrid [x, y] = col;
+					}
+					//If it IS the correct color. set the text to nothing and change the color.
+					else {
+						progressGrid [x, y] = col;
+						mainTex.SetPixel (x, y, colors [col]);
+					}
 				}
 			}
-			mainTex.Apply ();
+		} else {
+			Globals.Coord[] arr = null;
+			if (GameManager.Instance.input.brush == Globals.Brush.Medium) {
+				arr = Globals.GetMediumBrush (x, y);
+			} else if (GameManager.Instance.input.brush == Globals.Brush.Large) {
+				arr = Globals.GetLargeBrush (x, y);
+			}
+			for (int xx = 0; xx < arr.Length; xx++) {
+				if(IsInGrid(arr[xx].x, arr[xx].y)){
+					if (spriteGrid [arr[xx].x, arr[xx].y] != -1) {
+						if (progressGrid [arr[xx].x, arr[xx].y] != col) {
+							if (spriteGrid [arr[xx].x, arr[xx].y] != col) {
+								//If it doesn't match the target color, paint it but not at full alpha.
+								mainTex.SetPixel (arr[xx].x, arr[xx].y, new Color (colors [col].r, colors [col].g, colors [col].b, 0.5f));
+								//If it was the correct color previously, set the text again.
+								if (progressGrid [arr[xx].x, arr[xx].y] == spriteGrid [arr[xx].x, arr[xx].y]) {
+								} 
+								progressGrid [arr[xx].x, arr[xx].y] = col;
+							}
+							//If it IS the correct color. set the text to nothing and change the color.
+							else {
+								progressGrid [arr[xx].x, arr[xx].y] = col;
+								mainTex.SetPixel (arr[xx].x, arr[xx].y, colors [col]);
+							}
+						}
+					}
+				}
+			}
 		}
+		mainTex.Apply ();
 		AdjustGrid ();
 	}
 

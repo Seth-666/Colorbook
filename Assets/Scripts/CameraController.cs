@@ -11,8 +11,10 @@ public class CameraController : MonoBehaviour {
 	public float panSpeed;
 
 	public float currZoom;
-	public AnimationCurve panRamp;
-	public AnimationCurve zoomRamp;
+	//public AnimationCurve panRamp;
+	//public AnimationCurve zoomRamp;
+	public float panMulti;
+	public float zoomMulti;
 	public int textZoom;
 
 	public Camera cam;
@@ -25,7 +27,8 @@ public class CameraController : MonoBehaviour {
 	void Start(){
 		currZoom = cam.orthographicSize;
 		if (GameManager.Instance.input.isMobile) {
-			panSpeed = panRamp.Evaluate (currZoom);
+			panSpeed = (panMulti * currZoom); //panRamp.Evaluate (currZoom);
+			zoomSpeed = (zoomMulti * currZoom);
 		}
 		GetCameraExtents ();
 	}
@@ -54,8 +57,8 @@ public class CameraController : MonoBehaviour {
 		cam.orthographicSize = camSetting;
 		currZoom = camSetting;
 		if (GameManager.Instance.input.isMobile) {
-			panSpeed = panRamp.Evaluate (currZoom);
-			zoomSpeed = zoomRamp.Evaluate (currZoom);
+			panSpeed = (panMulti * currZoom);//panRamp.Evaluate (currZoom);
+			zoomSpeed = (zoomMulti * currZoom);//zoomRamp.Evaluate (currZoom);
 		}
 		if (lastCamSetting >= textZoom && camSetting < textZoom) {
 			GameManager.Instance.painter.AdjustGrid();
