@@ -46,3 +46,6 @@ TagManager:
   - name: AboveSprite
     uniqueID: 2671372135
     locked: 0
+  - name: UILayer
+    uniqueID: 713536721
+    locked: 0

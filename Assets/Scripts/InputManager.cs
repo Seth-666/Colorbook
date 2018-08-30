@@ -189,8 +189,73 @@ public class InputManager : MonoBehaviour {
 						float deltaMagDiff = prevDeltaMag - currDeltaMag;
 
 						GameManager.Instance.cam.Zoom (deltaMagDiff);
-					}
 
+					} else if (Input.touchCount == 0) {
+						if (Input.GetMouseButtonDown (0)) {
+							if (!inputOn) {
+								inputOn = true;
+								currTouch = GameManager.Instance.cam.cam.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, GameManager.Instance.cam.cam.transform.position.z));
+								touchTime += Time.deltaTime;
+							}
+						}
+						if (Input.GetMouseButton (0)) {
+							if (inputOn) {
+								lastTouch = currTouch;
+								currTouch = GameManager.Instance.cam.cam.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, GameManager.Instance.cam.cam.transform.position.z));
+								if (state == Globals.InputState.Waiting) {
+									touchTime += Time.deltaTime;
+									if (touchTime >= touchMax) {
+										state = Globals.InputState.Painting;
+										Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.mousePosition);
+										RaycastHit hit;
+										if (Physics.Raycast (ray, out hit, mask)) {
+											GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
+										}
+									} 
+									//If the distance has been exceeded, move the camera.
+									else {
+										float dist = Vector3.Distance (currTouch, lastTouch);
+										if (dist >= distMax) {
+											state = Globals.InputState.Dragging;
+										}
+									}
+								} else if (state == Globals.InputState.Dragging) {
+									Vector3 delta = currTouch - lastTouch;
+									GameManager.Instance.cam.Pan (delta);
+								} else if (state == Globals.InputState.Painting) {
+									Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.mousePosition);
+									RaycastHit hit;
+									if (Physics.Raycast (ray, out hit, mask)) {
+										GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
+									}
+								}
+							}
+						}
+						if (Input.GetMouseButtonUp (0)) {
+							if (inputOn) {
+								lastTouch = currTouch;
+								currTouch = GameManager.Instance.cam.cam.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, GameManager.Instance.cam.cam.transform.position.z));
+								inputOn = false;
+								touchTime = 0;
+								if (state == Globals.InputState.Waiting) {
+									//Try to paint pixel here.
+									Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.mousePosition);
+									RaycastHit hit;
+									if (Physics.Raycast (ray, out hit, mask)) {
+										GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
+									}
+								} else if (state == Globals.InputState.Painting) {
+									//Try to paint last pixel here.
+									Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.mousePosition);
+									RaycastHit hit;
+									if (Physics.Raycast (ray, out hit, mask)) {
+										GameManager.Instance.painter.TryPaintTile (hit, selectedColor);
+									}
+								}
+								state = Globals.InputState.Waiting;
+							}
+						}
+					}
 				}
 			}
 		}

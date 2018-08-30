@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour {
 	public CameraController cam;
 	public ObjectPool pool;
 
+	public SpriteData level;
+
 	void Awake(){
 		if (Instance == null) {
 			Instance = this;
@@ -20,12 +22,13 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	void Start(){
-		Initialize ();
-	}
+	//void Start(){
+	//	Initialize ();
+	//}
 
-	void Initialize(){
+	public void Initialize(){
 		painter = Camera.main.GetComponent<Painter> ();
+		painter.level = level;
 		input = Camera.main.GetComponent<InputManager> ();
 		ui = Camera.main.GetComponent<UIManager> ();
 		cam = Camera.main.GetComponent<CameraController>();

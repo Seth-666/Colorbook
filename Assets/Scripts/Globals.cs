@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class Globals : MonoBehaviour {
 
+	public enum Categories{
+		People,
+		Food,
+		Animals,
+		Weapons,
+		Vehicles,
+		Buildings,
+		Plants,
+		Monsters,
+		Dinosaurs,
+		Scenery,
+		Misc
+	}
+
 	public enum UIState{
 		Idle,
 		BrushPicker,

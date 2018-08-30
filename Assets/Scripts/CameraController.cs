@@ -11,8 +11,6 @@ public class CameraController : MonoBehaviour {
 	public float panSpeed;
 
 	public float currZoom;
-	//public AnimationCurve panRamp;
-	//public AnimationCurve zoomRamp;
 	public float panMulti;
 	public float zoomMulti;
 	public int textZoom;
@@ -27,10 +25,18 @@ public class CameraController : MonoBehaviour {
 	void Start(){
 		currZoom = cam.orthographicSize;
 		if (GameManager.Instance.input.isMobile) {
-			panSpeed = (panMulti * currZoom); //panRamp.Evaluate (currZoom);
+			panSpeed = (panMulti * currZoom);
 			zoomSpeed = (zoomMulti * currZoom);
 		}
 		GetCameraExtents ();
+	}
+
+	public bool ShowGrid(){
+		bool ret = false;
+		if (currZoom < textZoom) {
+			ret = true;
+		}
+		return ret;
 	}
 
 	public void SetExtents(MeshRenderer render){
@@ -43,7 +49,8 @@ public class CameraController : MonoBehaviour {
 	void GetCameraExtents(){
 		if (GameManager.Instance.painter.level.xSize > GameManager.Instance.painter.level.ySize) {
 			maxZoom = GameManager.Instance.painter.level.xSize;
-		} else {
+		} 
+		else {
 			maxZoom = GameManager.Instance.painter.level.ySize;
 		}
 		cam.orthographicSize = maxZoom;
@@ -57,8 +64,8 @@ public class CameraController : MonoBehaviour {
 		cam.orthographicSize = camSetting;
 		currZoom = camSetting;
 		if (GameManager.Instance.input.isMobile) {
-			panSpeed = (panMulti * currZoom);//panRamp.Evaluate (currZoom);
-			zoomSpeed = (zoomMulti * currZoom);//zoomRamp.Evaluate (currZoom);
+			panSpeed = (panMulti * currZoom);
+			zoomSpeed = (zoomMulti * currZoom);
 		}
 		if (lastCamSetting >= textZoom && camSetting < textZoom) {
 			GameManager.Instance.painter.AdjustGrid();

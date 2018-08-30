@@ -8,6 +8,9 @@ public class SpriteData : ScriptableObject {
 
 	public string myName;
 
+	public bool started;
+	public bool complete;
+
 	public int xSize;
 	public int ySize;
 
@@ -16,7 +19,9 @@ public class SpriteData : ScriptableObject {
 
 	public int tileCount;
 	public int colorCount;
+	public int difficulty;
 
-	public string tag;
+	public Globals.Categories type;
+	public Texture2D thumb;
 
 }

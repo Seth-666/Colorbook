@@ -37,7 +37,6 @@ public class UIManager : MonoBehaviour {
 			targetState = Globals.UIState.ColorPicker;
 			colorPicker.interactable = false;
 			brushPicker.interactable = false;
-			colorPanel.SetActive (true);
 			anim.SetTrigger ("ColorPicker");
 		} 
 		else if (state == Globals.UIState.ColorPicker) {
@@ -60,7 +59,7 @@ public class UIManager : MonoBehaviour {
 			targetState = Globals.UIState.BrushPicker;
 			colorPicker.interactable = false;
 			brushPicker.interactable = false;
-			brushPanel.SetActive (true);
+			//brushPanel.SetActive (true);
 			anim.SetTrigger ("BrushPicker");
 		} 
 		else if (state == Globals.UIState.BrushPicker) {
@@ -77,8 +76,8 @@ public class UIManager : MonoBehaviour {
 
 	public void AnimFinished(){
 		if (targetState == Globals.UIState.Idle) {
-			colorPanel.SetActive (false);
-			brushPanel.SetActive (false);
+			//colorPanel.SetActive (false);
+			//brushPanel.SetActive (false);
 			colorPicker.interactable = true;
 			brushPicker.interactable = true;
 			GameManager.Instance.input.state = GameManager.Instance.input.lastState;
