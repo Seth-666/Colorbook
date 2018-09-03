@@ -22,10 +22,6 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	//void Start(){
-	//	Initialize ();
-	//}
-
 	public void Initialize(){
 		painter = Camera.main.GetComponent<Painter> ();
 		painter.level = level;

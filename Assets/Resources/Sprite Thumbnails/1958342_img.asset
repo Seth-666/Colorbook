@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!28 &2800000
+Texture2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 1958342_img
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  serializedVersion: 2
+  m_Width: 12
+  m_Height: 20
+  m_CompleteImageSize: 960
+  m_TextureFormat: 4
+  m_MipCount: 1
+  m_IsReadable: 1
+  m_StreamingMipmaps: 0
+  m_StreamingMipmapsPriority: 0
+  m_AlphaIsTransparency: 0
+  m_ImageCount: 1
+  m_TextureDimension: 2
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 0
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_LightmapFormat: 0
+  m_ColorSpace: 1
+  image data: 960
+  _typelessdata: ffffff00ffffff00ffffff00ffffff00ffffff00000000ff000000ffffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00000000ff595959ff595959ff000000ffffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00000000ff595959ff595959ff858585ff595959ff000000ffffffff00ffffff00ffffff00ffffff00ffffff00000000ff646464ff595959ff858585ff858585ff858585ff646464ff000000ffffffff00ffffff00ffffff00000000ff595959ff595959ff787878ff787878ff787878ff787878ff414141ff838383ff000000ffffffff00000000ff595959ff595959ff858585ff787878ff787878ff787878ff787878ffc5c5c5ff838383ff838383ff000000ff000000ff595959ff595959ff858585ff787878ff787878ff787878ffcececeffc5c5c5ffc5c5c5ff838383ff000000ff000000ff595959ff595959ff858585ff787878ff787878ffffffffffcececeffc5c5c5ffc5c5c5ff838383ff000000ff000000ff595959ff595959ff858585ff6f6f6fff6f6f6fffffffffffc8c8c8ffc8c8c8ffc8c8c8ff848484ff000000ff000000ff595959ff595959ff858585ff6f6f6fff6f6f6fffffffffffc8c8c8ffc8c8c8ffc8c8c8ff848484ff000000ff000000ff595959ff595959ff858585ff6f6f6fff6f6f6fffffffffffc8c8c8ffc8c8c8ffc8c8c8ff848484ff000000ff000000ff595959ff595959ff858585ff6f6f6fff6f6f6fffffffffffc8c8c8ffc8c8c8ffc8c8c8ff848484ff000000ff000000ff6f6f6fff6f6f6fff6f6f6fff707070ff707070ffc6c6c6ffc6c6c6ffc5c5c5ffc5c5c5ff838383ff000000ff000000ff6f6f6fff6f6f6fff6f6f6fffc6c6c6ffc6c6c6ff707070ffc6c6c6ffc5c5c5ffc5c5c5ff838383ff000000ff000000ff6f6f6fff6f6f6fffdfdfdfffc6c6c6ffc6c6c6ff707070ff707070ffc5c5c5ff838383ff838383ff000000ffffffff00000000ffdfdfdffffdfdfdffffffffffc6c6c6ffc6c6c6ff707070ff838383ff838383ff000000ffffffff00ffffff00ffffff00000000ffcacacaffffffffffffffffff9d9d9dff9d9d9dff858585ff000000ffffffff00ffffff00ffffff00ffffff00ffffff00000000ff9d9d9dffffffffff9d9d9dff9d9d9dff000000ffffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff002d2d2dff9d9d9dff9d9d9dff2d2d2dffffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff002d2d2dff2d2d2dffffffff00ffffff00ffffff00ffffff00ffffff00
+  m_StreamData:
+    offset: 0
+    size: 0
+    path: 

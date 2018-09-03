@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dedc8197e979a764694c37fca44947a5, type: 3}
+  m_Name: 2022278
+  m_EditorClassIdentifier: 
+  myName: 2022278
+  started: 0
+  complete: 0
+  xSize: 6
+  ySize: 18
+  colorData: ffffffffffffffff05000000050000000500000005000000050000000500000005000000050000000500000005000000ffffffffffffffff050000000500000005000000ffffffffffffffff05000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0500000005000000ffffffffffffffff030000000500000005000000ffffffff020000000200000002000000020000000200000002000000010000000100000001000000ffffffffffffffffffffffffffffffff03000000040000000500000005000000ffffffff02000000020000000200000002000000020000000200000001000000ffffffff01000000ffffffffffffffffffffffffffffffff030000000400000005000000ffffffff05000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0500000005000000ffffffffffffffff0300000005000000ffffffffffffffff05000000050000000500000005000000050000000500000005000000050000000500000005000000ffffffffffffffff050000000500000005000000ffffffff
+  colors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0.6784314, g: 0.30980393, b: 0.61960787, a: 1}
+  - {r: 0.38039216, g: 0.14901961, b: 0.42745098, a: 1}
+  - {r: 0.49019608, g: 0.23921569, b: 0.11764706, a: 1}
+  - {r: 0.64705884, g: 0.3254902, b: 0.14509805, a: 1}
+  - {r: 0.015686275, g: 0.02745098, b: 0.02745098, a: 1}
+  tileCount: 61
+  colorCount: 6
+  difficulty: 366
+  type: 0
+  thumb: {fileID: 2800000, guid: cbe9ebc612f822240ae6d084452cff3d, type: 2}

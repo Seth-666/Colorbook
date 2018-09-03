@@ -8,9 +8,6 @@ public class SpriteData : ScriptableObject {
 
 	public string myName;
 
-	public bool started;
-	public bool complete;
-
 	public int xSize;
 	public int ySize;
 

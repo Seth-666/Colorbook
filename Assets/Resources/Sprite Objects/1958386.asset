@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dedc8197e979a764694c37fca44947a5, type: 3}
+  m_Name: 1958386
+  m_EditorClassIdentifier: 
+  myName: 1958386
+  started: 0
+  complete: 0
+  xSize: 36
+  ySize: 36
+  colorData: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1a000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1a0000001a0000001a000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1a000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b0000002b0000002b0000002c0000002c0000002c0000002c0000002c000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff18000000ffffffffffffffffffffffffffffffffffffffffffffffff31000000020000000200000002000000010000000100000001000000010000002c000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff29000000020000000200000002000000020000000100000001000000010000001e0000002c000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff290000001d0000000900000009000000090000000200000001000000060000001e0000001e0000002c000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff290000001d0000000e00000009000000090000000200000002000000060000001e0000001e0000001e0000002c000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff32000000040000000a0000000a0000000b0000000100000001000000060000001f0000001f0000001f0000001f0000002c000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff18000000ffffffffffffffffffffffffffffffffffffffffffffffff2d000000040000000a0000000a0000000a0000000100000001000000060000001e0000001f0000001f0000001f0000001f0000002c000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1a000000ffffffff18000000ffffffffffffffffffffffffffffffff2d000000030000000a0000000a0000000a0000000400000001000000010000001e0000001e0000001f0000001f0000001f0000001f0000002c000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff18000000ffffffffffffffffffffffffffffffff2d00000003000000080000000a0000000a0000000400000004000000060000001e0000001e0000001e0000001f0000001f0000001f0000002b000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff32000000040000000a0000000a0000000c0000000100000001000000070000001f0000001f0000001f0000001f0000001f0000001f0000002d000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff29000000040000000a0000000a0000000a0000000100000001000000010000001f0000001f0000001f0000001f00000023000000220000002d000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff290000001d0000000a0000000a0000000a0000000400000001000000010000001f0000001f0000001f0000001f00000023000000230000002d000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff290000001d0000000e0000000a0000000a0000000400000004000000010000001f0000001f0000001f0000001f00000023000000230000002e000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff32000000040000000a0000000a0000000c0000000100000001000000010000001f0000001f0000001f0000001f00000026000000260000002f000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b0000002b000000ffffffffffffffffffffffffffffffffffffffffffffffff2d000000040000000a0000000a0000000a0000000100000001000000010000001f0000001f0000001f0000001f00000023000000260000002f000000ffffffffffffffffffffffff18000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b000000140000002b000000ffffffffffffffffffffffffffffffff2d000000030000000a0000000a0000000a0000000400000001000000010000001f0000001f0000001f0000001f00000023000000230000002f000000ffffffffffffffffffffffff18000000ffffffff18000000ffffffffffffffffffffffffffffffff1a000000ffffffffffffffff2b0000001400000014000000140000002b000000ffffffffffffffff2d00000003000000080000000a0000000a0000000400000004000000010000001f0000001f0000001f0000001f00000023000000230000002e000000ffffffffffffffffffffffffffffffffffffffff18000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b000000140000001400000014000000140000002b00000028000000050000000d0000000d0000000c0000000100000001000000010000001f0000001f0000001f0000001f00000026000000260000002f000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b00000014000000140000001400000014000000280000000d0000000d0000000d0000000100000001000000010000001f0000001f0000001f0000001f00000023000000260000002f000000ffffffffffffffffffffffff18000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b00000014000000140000001400000020000000280000000d0000000500000001000000010000001f0000001f0000001f0000001f00000023000000230000002f000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b000000140000001400000020000000200000002800000005000000010000001f0000001f0000001f0000001f00000023000000230000002e000000ffffffffffffffffffffffff17000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b00000014000000130000001300000013000000270000002100000021000000210000002100000024000000240000002b000000ffffffffffffffffffffffff18000000180000001a000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b00000014000000130000001b000000130000001300000030000000210000002100000025000000240000002b000000ffffffffffffffffffffffffffffffffffffffff18000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b00000014000000130000001b0000001b000000130000000f0000003000000025000000250000002b000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b000000140000001b0000001b0000001b0000001b0000000f0000000f0000003000000030000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2a0000001100000019000000180000001800000018000000180000001800000018000000120000002b000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2d0000002d0000002d0000002d0000002a0000001100000019000000190000002b0000002b0000002b0000002b000000180000001800000018000000180000002b000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2d0000001500000015000000150000001100000011000000190000002a000000ffffffffffffffffffffffffffffffff2b000000180000001800000018000000180000002b000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2d00000015000000150000001500000011000000190000002a000000ffffffffffffffffffffffffffffffffffffffffffffffff2b000000180000001800000018000000180000002b000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff290000001000000010000000100000001c0000001c0000002b000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b00000018000000180000002b0000002b000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff290000001000000016000000160000001c0000001c0000002b000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2b0000002b000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff290000001000000016000000160000001c0000001c0000002b000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff290000002900000029000000290000002b0000002b0000002b000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  colors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0.96862745, g: 0.9843137, b: 1, a: 1}
+  - {r: 0.96862745, g: 0.9843137, b: 0.96862745, a: 1}
+  - {r: 0.96862745, g: 0.9529412, b: 0.96862745, a: 1}
+  - {r: 0.96862745, g: 0.9529412, b: 0.9372549, a: 1}
+  - {r: 0.8392157, g: 0.8392157, b: 0.8392157, a: 1}
+  - {r: 0.8392157, g: 0.8352941, b: 0.8392157, a: 1}
+  - {r: 0.7176471, g: 0.7294118, b: 0.7176471, a: 1}
+  - {r: 0.69803923, g: 0.7137255, b: 0.7176471, a: 1}
+  - {r: 0.6862745, g: 0.6862745, b: 0.69803923, a: 1}
+  - {r: 0.6784314, g: 0.68235296, b: 0.6784314, a: 1}
+  - {r: 0.6784314, g: 0.67058825, b: 0.6784314, a: 1}
+  - {r: 0.7529412, g: 0.7137255, b: 0.6666667, a: 1}
+  - {r: 0.7529412, g: 0.7176471, b: 0.5568628, a: 1}
+  - {r: 0.7411765, g: 0.6039216, b: 0.41960785, a: 1}
+  - {r: 0.7529412, g: 0.4745098, b: 0.29803923, a: 1}
+  - {r: 0.7529412, g: 0.53333336, b: 0.24705882, a: 1}
+  - {r: 0.7411765, g: 0.5411765, b: 0.24705882, a: 1}
+  - {r: 0.78431374, g: 0.5411765, b: 0.21176471, a: 1}
+  - {r: 0.8392157, g: 0.5568628, b: 0.19215687, a: 1}
+  - {r: 0.87058824, g: 0.45882353, b: 0.19215687, a: 1}
+  - {r: 1, g: 0.6039216, b: 0.3529412, a: 1}
+  - {r: 0.96862745, g: 0.69803923, b: 0.2901961, a: 1}
+  - {r: 1, g: 0.69803923, b: 0.25882354, a: 1}
+  - {r: 1, g: 0.68235296, b: 0.25882354, a: 1}
+  - {r: 0.9882353, g: 0.6901961, b: 0.24705882, a: 1}
+  - {r: 1, g: 0.69803923, b: 0.22352941, a: 1}
+  - {r: 0.96862745, g: 0.69803923, b: 0.41960785, a: 1}
+  - {r: 1, g: 0.96862745, b: 0.7411765, a: 1}
+  - {r: 0.5176471, g: 0.5254902, b: 0.5176471, a: 1}
+  - {r: 0.5176471, g: 0.50980395, b: 0.5176471, a: 1}
+  - {r: 0.5372549, g: 0.4745098, b: 0.39607844, a: 1}
+  - {r: 0.5568628, g: 0.4862745, b: 0.38431373, a: 1}
+  - {r: 0.41960785, g: 0.4117647, b: 0.41960785, a: 1}
+  - {r: 0.40784314, g: 0.4117647, b: 0.41960785, a: 1}
+  - {r: 0.3882353, g: 0.4117647, b: 0.41960785, a: 1}
+  - {r: 0.37254903, g: 0.36862746, b: 0.3529412, a: 1}
+  - {r: 0.47058824, g: 0.3882353, b: 0.26666668, a: 1}
+  - {r: 0.3529412, g: 0.23529412, b: 0.19215687, a: 1}
+  - {r: 0.32156864, g: 0.23529412, b: 0.12941177, a: 1}
+  - {r: 0.25882354, g: 0.21960784, b: 0.19215687, a: 1}
+  - {r: 0.25882354, g: 0.23529412, b: 0.22352941, a: 1}
+  - {r: 0.22352941, g: 0.23529412, b: 0.22352941, a: 1}
+  - {r: 0.22352941, g: 0.22745098, b: 0.23529412, a: 1}
+  - {r: 0.22352941, g: 0.21960784, b: 0.22352941, a: 1}
+  - {r: 0.19215687, g: 0.21960784, b: 0.22352941, a: 1}
+  - {r: 0.22352941, g: 0.23529412, b: 0.25882354, a: 1}
+  - {r: 0.19215687, g: 0.25490198, b: 0.32156864, a: 1}
+  - {r: 0.16078432, g: 0.17254902, b: 0.16078432, a: 1}
+  - {r: 0.12941177, g: 0.15686275, b: 0.16078432, a: 1}
+  tileCount: 466
+  colorCount: 51
+  difficulty: 23766
+  type: 0
+  thumb: {fileID: 2800000, guid: ff815ea3f5dca2942837fc07799eb1c0, type: 2}

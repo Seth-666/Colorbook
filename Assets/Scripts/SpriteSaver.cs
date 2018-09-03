@@ -9,14 +9,22 @@ public class SpriteSaver : MonoBehaviour {
 
 	public Texture2D[] textures;
 	public bool processData;
-
 	public bool prescan;
+
+	public bool assignCategories;
+	public SpriteData[] dataObjects;
+	int currIndex;
 
 	public float tileSize;
 
 	public GameObject texObj;
 
 	void Update(){
+		if (assignCategories) {
+			assignCategories = false;
+			currIndex = 0;
+			texObj.GetComponent<MeshRenderer> ().material.mainTexture = dataObjects [0].thumb;
+		}
 		if (prescan) {
 			prescan = false;
 			if (!Prescan ()) {
@@ -35,6 +43,27 @@ public class SpriteSaver : MonoBehaviour {
 		for (int xx = 0; xx < textures.Length; xx++) {
 			GetData (textures [xx]);
 			yield return null;
+		}
+	}
+
+	public void AssignCategory(string type){
+		System.Array typeNums = System.Enum.GetValues (typeof(Globals.Categories));
+		Globals.Categories[] types = new Globals.Categories[typeNums.Length];
+		System.Array.Copy (typeNums, types, typeNums.Length);
+		Globals.Categories theEnum = Globals.Categories.Misc;
+		for (int xx = 0; xx < types.Length; xx++) {
+			if (type == types[xx].ToString ()) {
+				theEnum = types[xx];
+				break;
+			}
+		}
+		dataObjects [currIndex].type = theEnum;
+		UnityEditor.AssetDatabase.Refresh ();
+		UnityEditor.EditorUtility.SetDirty (dataObjects[currIndex]);
+		UnityEditor.AssetDatabase.SaveAssets ();
+		currIndex++;
+		if (currIndex < dataObjects.Length) {
+			texObj.GetComponent<MeshRenderer> ().material.mainTexture = dataObjects [currIndex].thumb;
 		}
 	}
 

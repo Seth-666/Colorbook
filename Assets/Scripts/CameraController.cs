@@ -74,13 +74,13 @@ public class CameraController : MonoBehaviour {
 		}
 	}
 
-	public void Pan(Vector3 dir){
+	public void Pan(Vector3 dir, int multiplier){
 		if (currZoom >= textZoom) {
 			if (GameManager.Instance.pool.gridActive) {
 				GameManager.Instance.painter.DisableAllText ();
 			}
 		}
-		Vector3 movement = new Vector3 (dir.x * (panSpeed * Time.deltaTime), dir.y * (panSpeed * Time.deltaTime), 0);
+		Vector3 movement = new Vector3 (dir.x * ((panSpeed + multiplier) * Time.deltaTime), dir.y * ((panSpeed + multiplier) * Time.deltaTime), 0);
 		Vector3 targetPos = cam.transform.position - movement;
 		targetPos.x = Mathf.Clamp (targetPos.x, minX, maxX);
 		targetPos.y = Mathf.Clamp (targetPos.y, minY, maxY);

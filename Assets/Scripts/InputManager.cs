@@ -25,6 +25,9 @@ public class InputManager : MonoBehaviour {
 
 	public bool inputOn = false;
 
+	public UnityEngine.UI.Text inputBool;
+	public UnityEngine.UI.Text inputState;
+
 	void Start(){
 		if (Application.isMobilePlatform) {
 			isMobile = true;
@@ -35,6 +38,13 @@ public class InputManager : MonoBehaviour {
 	}
 
 	void Update(){
+		inputBool.text = "Input: ";
+		if (inputOn) {
+			inputBool.text += "On";
+		} else {
+			inputBool.text += "Off";
+		}
+		inputState.text = "Current Function: " + state.ToString ();
 		if (state != Globals.InputState.Busy) {
 			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == null) {				
 				if (!isMobile) {
@@ -77,7 +87,7 @@ public class InputManager : MonoBehaviour {
 								}
 							} else if (state == Globals.InputState.Dragging) {
 								Vector3 delta = currTouch - lastTouch;
-								GameManager.Instance.cam.Pan (delta);
+								GameManager.Instance.cam.Pan (delta, 0);
 							} else if (state == Globals.InputState.Painting) {
 								Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.mousePosition);
 								RaycastHit hit;
@@ -142,7 +152,7 @@ public class InputManager : MonoBehaviour {
 										}
 									}
 								} else if (state == Globals.InputState.Dragging) {
-									GameManager.Instance.cam.Pan (Input.GetTouch (0).deltaPosition);
+									GameManager.Instance.cam.Pan (Input.GetTouch (0).deltaPosition, 0);
 								} else if (state == Globals.InputState.Painting) {
 									Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.GetTouch (0).position);
 									RaycastHit hit;
@@ -190,7 +200,9 @@ public class InputManager : MonoBehaviour {
 
 						GameManager.Instance.cam.Zoom (deltaMagDiff);
 
-					} else if (Input.touchCount == 0) {
+					} 
+					//If it's on mobile but using a stylus.
+					else if (Input.touchCount == 0) {
 						if (Input.GetMouseButtonDown (0)) {
 							if (!inputOn) {
 								inputOn = true;
@@ -221,7 +233,7 @@ public class InputManager : MonoBehaviour {
 									}
 								} else if (state == Globals.InputState.Dragging) {
 									Vector3 delta = currTouch - lastTouch;
-									GameManager.Instance.cam.Pan (delta);
+									GameManager.Instance.cam.Pan (delta, 25);
 								} else if (state == Globals.InputState.Painting) {
 									Ray ray = GameManager.Instance.cam.cam.ScreenPointToRay (Input.mousePosition);
 									RaycastHit hit;

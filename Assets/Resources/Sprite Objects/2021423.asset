@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dedc8197e979a764694c37fca44947a5, type: 3}
+  m_Name: 2021423
+  m_EditorClassIdentifier: 
+  myName: 2021423
+  started: 0
+  complete: 0
+  xSize: 12
+  ySize: 20
+  colorData: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff03000000030000000300000003000000030000000300000004000000040000000100000001000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0300000003000000030000000300000003000000040000000100000001000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff070000000700000007000000070000000700000007000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff070000000700000007000000070000000700000007000000ffffffffffffffffffffffff10000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff07000000070000000700000007000000060000000600000010000000ffffffff10000000100000000e0000000e0000000f0000000f0000000f0000000b0000000a0000000a0000000a0000000a0000000c0000000c0000000c0000000c0000000d0000000d000000100000001000000010000000100000000e0000000e0000000b0000000b0000000b0000000b0000000a0000000a0000000a0000000a0000000c0000000c000000090000000900000008000000080000001000000010000000ffffffff10000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff07000000070000000700000007000000060000000600000010000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff070000000700000007000000070000000700000007000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff070000000700000007000000070000000700000007000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0300000003000000030000000300000003000000050000000500000002000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff03000000030000000300000003000000030000000300000002000000020000000200000002000000
+  colors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0.7411765, g: 0.8117647, b: 0.80784315, a: 1}
+  - {r: 0.7411765, g: 0.79607844, b: 0.80784315, a: 1}
+  - {r: 0.64705884, g: 0.69803923, b: 0.70980394, a: 1}
+  - {r: 0.6117647, g: 0.67058825, b: 0.6745098, a: 1}
+  - {r: 0.6117647, g: 0.6666667, b: 0.6745098, a: 1}
+  - {r: 0.5803922, g: 0.61960787, b: 0.6117647, a: 1}
+  - {r: 0.54901963, g: 0.6039216, b: 0.6117647, a: 1}
+  - {r: 0.62352943, g: 0.6039216, b: 0.47058824, a: 1}
+  - {r: 0.63529414, g: 0.5803922, b: 0.4392157, a: 1}
+  - {r: 0.654902, g: 0.54509807, b: 0.3647059, a: 1}
+  - {r: 0.64705884, g: 0.5568628, b: 0.3529412, a: 1}
+  - {r: 0.6784314, g: 0.57254905, b: 0.3529412, a: 1}
+  - {r: 0.6666667, g: 0.5882353, b: 0.32941177, a: 1}
+  - {r: 0.6117647, g: 0.50980395, b: 0.32156864, a: 1}
+  - {r: 0.6117647, g: 0.49019608, b: 0.32156864, a: 1}
+  - {r: 0.70980394, g: 0.57254905, b: 0.19215687, a: 1}
+  tileCount: 116
+  colorCount: 17
+  difficulty: 1972
+  type: 0
+  thumb: {fileID: 2800000, guid: d04b8965a5b215843b223bce4058310d, type: 2}

@@ -15,13 +15,16 @@ public class Globals : MonoBehaviour {
 		Monsters,
 		Dinosaurs,
 		Scenery,
-		Misc
+		Misc,
+		Started,
+		Completed
 	}
 
 	public enum UIState{
 		Idle,
 		BrushPicker,
 		ColorPicker,
+		Menu,
 		Busy,
 		Paused
 	}
@@ -37,6 +40,11 @@ public class Globals : MonoBehaviour {
 		Painting,
 		Dragging,
 		Busy
+	}
+
+	public struct CategoryCollection{
+		public Globals.Categories type;
+		public List<SpriteButton> buttons;
 	}
 
 	public struct Coord{

@@ -20,6 +20,7 @@ public class Painter : MonoBehaviour {
 	public Texture2D mainTex;
 
 	public SpriteData level;
+	public ProgressData progress;
 
 	public int xScope;
 	public int yScope;
@@ -28,12 +29,17 @@ public class Painter : MonoBehaviour {
 
 	void Awake(){
 		GameManager.Instance.Initialize ();
-	}
-
-	void Update(){
-		if (Input.GetKey (KeyCode.Escape)) {
-			SaveData ();
-			UnityEngine.SceneManagement.SceneManager.LoadScene (0, UnityEngine.SceneManagement.LoadSceneMode.Single);
+		if (File.Exists (Application.persistentDataPath + "/LevelData/" + level.myName + ".lev")) {
+			BinaryFormatter bf = new BinaryFormatter ();
+			FileStream file = File.Open (Application.persistentDataPath + "/LevelData/" + level.myName + ".lev", FileMode.Open);
+			ProgressData dat = (ProgressData)bf.Deserialize (file);
+			file.Close ();
+			progressGrid = Globals.LoadArray (dat.progress, level.xSize, level.ySize);
+			progress = dat;
+		}
+		else{
+			ProgressData newProgress = new ProgressData ();
+			progress = newProgress;
 		}
 	}
 
@@ -173,79 +179,87 @@ public class Painter : MonoBehaviour {
 	}
 
 	public void TryPaintTile(RaycastHit hit, int col){
-		bool changeMade = false;
-		int x = Mathf.FloorToInt (hit.textureCoord.x * mainTex.width);
-		int y = Mathf.FloorToInt (hit.textureCoord.y * mainTex.height);
-		if (GameManager.Instance.input.brush == Globals.Brush.Small) {
-			if (spriteGrid [x, y] != -1) {
-				//If it's not already the correct color.
-				if (progressGrid [x, y] != spriteGrid [x, y]) {
-					//If it's not already the selected color.
-					if (progressGrid [x, y] != col) {
-						if (spriteGrid [x, y] != col) {
-							//If it doesn't match the target color, paint it but not at full alpha.
-							mainTex.SetPixel (x, y, new Color (colors [col].r, colors [col].g, colors [col].b, 0.5f));
-							changeMade = true;
-							//If it was the correct color previously, set the text again.
-							if (progressGrid [x, y] == spriteGrid [x, y]) {
-							} 
-							progressGrid [x, y] = col;
-						}
-						//If it IS the correct color. set the text to nothing and change the color.
-						else {
-							progressGrid [x, y] = col;
-							mainTex.SetPixel (x, y, colors [col]);
-							changeMade = true;
-							colorCount [col]--;
+		if (GameManager.Instance.input.selectedColor > 0) {
+			bool changeMade = false;
+			int x = Mathf.FloorToInt (hit.textureCoord.x * mainTex.width);
+			int y = Mathf.FloorToInt (hit.textureCoord.y * mainTex.height);
+			if (GameManager.Instance.input.brush == Globals.Brush.Small) {
+				if (spriteGrid [x, y] != -1) {
+					//If it's not already the correct color.
+					if (progressGrid [x, y] != spriteGrid [x, y]) {
+						//If it's not already the selected color.
+						if (progressGrid [x, y] != col) {
+							if (spriteGrid [x, y] != col) {
+								//If it doesn't match the target color, paint it but not at full alpha.
+								mainTex.SetPixel (x, y, new Color (colors [col].r, colors [col].g, colors [col].b, 0.5f));
+								changeMade = true;
+								//If it was the correct color previously, set the text again.
+								if (progressGrid [x, y] == spriteGrid [x, y]) {
+								} 
+								progressGrid [x, y] = col;
+							}
+							//If it IS the correct color. set the text to nothing and change the color.
+							else {
+								progressGrid [x, y] = col;
+								mainTex.SetPixel (x, y, colors [col]);
+								changeMade = true;
+								colorCount [col]--;
+								if (colorCount [col] <= 0) {
+									GameManager.Instance.input.selectedColor = 0;
+									GameManager.Instance.ui.ToggleColorSelect ();
+								}
+							}
 						}
 					}
 				}
-			}
-		} else {
-			Globals.Coord[] arr = null;
-			if (GameManager.Instance.input.brush == Globals.Brush.Medium) {
-				arr = Globals.GetMediumBrush (x, y);
-			} else if (GameManager.Instance.input.brush == Globals.Brush.Large) {
-				arr = Globals.GetLargeBrush (x, y);
-			}
-			for (int xx = 0; xx < arr.Length; xx++) {
-				if(IsInGrid(arr[xx].x, arr[xx].y)){
-					if (spriteGrid [arr[xx].x, arr[xx].y] != -1) {
-						if (progressGrid [arr [xx].x, arr [xx].y] != spriteGrid [arr [xx].x, arr [xx].y]) {
-							if (progressGrid [arr [xx].x, arr [xx].y] != col) {
-								if (spriteGrid [arr [xx].x, arr [xx].y] != col) {
-									//If it doesn't match the target color, paint it but not at full alpha.
-									mainTex.SetPixel (arr [xx].x, arr [xx].y, new Color (colors [col].r, colors [col].g, colors [col].b, 0.5f));
-									changeMade = true;
-									//If it was the correct color previously, set the text again.
-									if (progressGrid [arr [xx].x, arr [xx].y] == spriteGrid [arr [xx].x, arr [xx].y]) {
-									} 
-									progressGrid [arr [xx].x, arr [xx].y] = col;
-								}
-								//If it IS the correct color. set the text to nothing and change the color.
-								else {
-									progressGrid [arr [xx].x, arr [xx].y] = col;
-									mainTex.SetPixel (arr [xx].x, arr [xx].y, colors [col]);
-									changeMade = true;
-									colorCount [col]--;
+			} else {
+				Globals.Coord[] arr = null;
+				if (GameManager.Instance.input.brush == Globals.Brush.Medium) {
+					arr = Globals.GetMediumBrush (x, y);
+				} else if (GameManager.Instance.input.brush == Globals.Brush.Large) {
+					arr = Globals.GetLargeBrush (x, y);
+				}
+				for (int xx = 0; xx < arr.Length; xx++) {
+					if (IsInGrid (arr [xx].x, arr [xx].y)) {
+						if (spriteGrid [arr [xx].x, arr [xx].y] != -1) {
+							if (progressGrid [arr [xx].x, arr [xx].y] != spriteGrid [arr [xx].x, arr [xx].y]) {
+								if (progressGrid [arr [xx].x, arr [xx].y] != col) {
+									if (spriteGrid [arr [xx].x, arr [xx].y] != col) {
+										//If it doesn't match the target color, paint it but not at full alpha.
+										mainTex.SetPixel (arr [xx].x, arr [xx].y, new Color (colors [col].r, colors [col].g, colors [col].b, 0.5f));
+										changeMade = true;
+										//If it was the correct color previously, set the text again.
+										if (progressGrid [arr [xx].x, arr [xx].y] == spriteGrid [arr [xx].x, arr [xx].y]) {
+										} 
+										progressGrid [arr [xx].x, arr [xx].y] = col;
+									}
+									//If it IS the correct color. set the text to nothing and change the color.
+									else {
+										progressGrid [arr [xx].x, arr [xx].y] = col;
+										mainTex.SetPixel (arr [xx].x, arr [xx].y, colors [col]);
+										changeMade = true;
+										colorCount [col]--;
+										if (colorCount [col] <= 0) {
+											GameManager.Instance.input.selectedColor = 0;
+											GameManager.Instance.ui.ToggleColorSelect ();
+										}
+									}
 								}
 							}
 						}
 					}
 				}
 			}
-		}
-		mainTex.Apply ();
-		AdjustGrid ();
-		if (changeMade) {
-			if (!level.started) {
-				level.started = true;
+			mainTex.Apply ();
+			AdjustGrid ();
+			if (changeMade) {
+				if (!progress.started) {
+					progress.started = true;
+				}
+				if (CheckColors ()) {
+					progress.completed = true;
+				}
 			}
-			if (CheckColors ()) {
-				Debug.Log ("Level complete!");
-				level.complete = true;
-			}
-			//SaveData ();
 		}
 	}
 
@@ -282,7 +296,9 @@ public class Painter : MonoBehaviour {
 				}
 				else if (spriteGrid [xx, yy] > 0) {
 					newTex.SetPixel (xx, yy, colors [spriteGrid [xx, yy]]);
-					colorCount [spriteGrid [xx, yy]]++;
+					if (progressGrid [xx, yy] != spriteGrid [xx, yy]) {
+						colorCount [spriteGrid [xx, yy]]++;
+					}
 				}
 			}
 		}
@@ -339,9 +355,30 @@ public class Painter : MonoBehaviour {
 		for (int xx = 0; xx < colorCount.Length; xx++) {
 			if (colorCount [xx] > 0) {
 				complete = false;
+				break;
 			}
 		}
 		return complete;
+	}
+
+	public void ResetProgress(){
+		for (int xx = 0; xx < level.xSize; xx++) {
+			for (int yy = 0; yy < level.ySize; yy++) {
+				progressGrid [xx, yy] = 0;
+			}
+		}
+		colorCount = new int[colors.Length];
+		for (int xx = 0; xx < level.xSize; xx++) {
+			for (int yy = 0; yy < level.ySize; yy++) {
+				if (spriteGrid [xx, yy] > 0) {
+					colorCount [spriteGrid [xx, yy]]++;
+				}
+			}
+		}
+		RecolorAll ();
+		progress.completed = false;
+		progress.started = false;
+		SaveData ();
 	}
 
 	public Vector2 PosToVector2(int xx, int yy){
@@ -377,15 +414,14 @@ public class Painter : MonoBehaviour {
 		return ret;
 	}
 
-	void SaveData(){
-		ProgressData dat = new ProgressData ();
+	public void SaveData(){
 		BinaryFormatter bf = new BinaryFormatter ();
 		FileStream file = File.Create (Application.persistentDataPath + "/LevelData/" + level.myName + ".lev");
-		dat.progress = Globals.SaveArray (progressGrid);
+		progress.progress = Globals.SaveArray (progressGrid);
 		Texture2D tempTex = GetThumbTexture ();
 		byte[] thumbData = tempTex.EncodeToPNG();
 		File.WriteAllBytes (Application.persistentDataPath + "/Thumbs/" + level.myName + ".png", thumbData);
-		bf.Serialize (file, dat);
+		bf.Serialize (file, progress);
 		file.Close ();
 	}
 
@@ -430,8 +466,10 @@ public class Painter : MonoBehaviour {
 }
 
 [System.Serializable]
-class ProgressData{
+public class ProgressData{
 
 	public int[] progress;
+	public bool started;
+	public bool completed;
 
 }
