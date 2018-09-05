@@ -49,16 +49,18 @@ public class Painter : MonoBehaviour {
 
 	void OnApplicationFocus(bool focus){
 		if (!focus) {
-			Debug.Log ("Focus lost. Saving.");
 			SaveData ();
 		}
 	}
 
 	void OnApplicationPause(bool pause){
 		if (pause) {
-			Debug.Log ("Application paused. Saving.");
 			SaveData ();
 		}
+	}
+
+	void OnApplicationQuit(){
+		SaveData ();
 	}
 
 	IEnumerator LateStart(){
@@ -68,8 +70,6 @@ public class Painter : MonoBehaviour {
 		if (level != null) {
 			LoadLevel ();
 			RenderData ();
-		} else {
-			Debug.Log ("No level data loaded.");
 		}
 		GameManager.Instance.ui.InitializeUI ();
 	}

@@ -74,6 +74,7 @@ public class SpriteSaver : MonoBehaviour {
 			for (int yy = 0; yy < allColors.Length; yy++){
 				if (allColors [yy].a > 0 && allColors [yy].a < 1) {
 					Debug.Log ("Semi-transparent pixel found on file " + textures[xx].name);
+					UnityEditor.AssetDatabase.MoveAsset ("Assets/Sprites/ToProcessSprites/" + textures [xx].name + ".png", "Assets/Sprites/ToFixSprites/" + textures [xx].name + ".png");
 					ret = false;
 					break; 
 				}

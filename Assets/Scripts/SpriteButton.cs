@@ -7,6 +7,7 @@ public class SpriteButton : MonoBehaviour {
 
 	public Button myButton;
 	public Image myCol;
+	public Image locked;
 	public SpriteData data;
 	public ProgressData progress;
 

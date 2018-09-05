@@ -51,19 +51,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02bab79b337e8a44db24e1c10d6644aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 2800000, guid: e3db8cb74a76285489c392ee8d0e5df3, type: 3}
-  getData: 0
-  saveData: 0
-  loadData: 0
-  renderData: 0
-  tile: {fileID: 114865934646958290, guid: 5fae9d5679a7c0247a7b5faf206dd898, type: 2}
-  colors: []
-  xSize: 0
-  ySize: 0
+  layer:
+    serializedVersion: 2
+    m_Bits: 0
+  textures: []
+  processData: 0
+  prescan: 0
+  assignCategories: 0
+  dataObjects: []
   tileSize: 1
-  selected: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
-  startCol: {r: 0.9150943, g: 0.9150943, b: 0.9150943, a: 1}
-  endCol: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-  container: {fileID: 0}
-  dataName: 
-  tags: []
+  texObj: {fileID: 0}

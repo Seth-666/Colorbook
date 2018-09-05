@@ -8,4 +8,8 @@ public class AnimationTrigger : MonoBehaviour {
 		GameManager.Instance.ui.AnimFinished ();
 	}
 
+	public void MainAnimationFinished(){
+		Camera.main.GetComponent<MainMenu> ().AnimationFinished ();
+	}
+
 }

@@ -7,6 +7,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class MainMenu : MonoBehaviour {
 
+	public Animator anim;
+
 	public SpriteButton spriteButton;
 	public GameObject categoriesPanel;
 	public GameObject spritePanel;
@@ -18,71 +20,249 @@ public class MainMenu : MonoBehaviour {
 
 	public GameData gameData;
 
-	void Start(){
-		if (File.Exists (Application.persistentDataPath + "GameData.dat")) {
-			BinaryFormatter bf = new BinaryFormatter ();
-			FileStream file = File.Open (Application.persistentDataPath + "GameData.dat", FileMode.Open);
-			GameData dat = (GameData)bf.Deserialize (file);
-			file.Close ();
-			gameData = dat;
-			//If more than 24 hours passed.
-			System.TimeSpan ts = gameData.dayStarted - System.DateTime.Now;
-			Debug.Log ("Time passed: " + ts);
-			if (ts.TotalHours > 24) {
-				int totalTokens = 0;
-				int dayCount = 0;
-				while (ts.TotalHours > 24) {
-					dayCount++;
-					System.TimeSpan newSpan = new System.TimeSpan (0, 24, 0);
-					ts = ts.Subtract (newSpan);
-					totalTokens += 30;
-				}
-				int minutesPassed = (int)ts.TotalMinutes;
-				int addTokens = 0;
-				if (minutesPassed > 2) {
-					addTokens = Mathf.FloorToInt (minutesPassed);
-					addTokens -= gameData.tokensClaimed;
-					addTokens = Mathf.Clamp (addTokens, 0, 30);
-					if (addTokens > 0) {
-						totalTokens += addTokens;
-					}
-				}
-				System.DateTime newDay = gameData.dayStarted.AddDays (dayCount);
-				gameData.dayStarted = newDay;
-				gameData.tokensClaimed = addTokens;
-				gameData.tokenCount += totalTokens;
-			}
-			//Else, calculate how many tokens have been earned and cap them at 30.
-			else {
-				if (gameData.tokensClaimed < 30) {
-					int minutesPassed = (int)ts.TotalMinutes;
-					if (minutesPassed > 2) {
-						int tokenCount = Mathf.FloorToInt (minutesPassed / 2);
-						tokenCount -= gameData.tokensClaimed;
-						tokenCount = Mathf.Clamp (tokenCount, 0, 30);
-						if (tokenCount > 0) {
-							gameData.tokenCount += tokenCount;
-						}
-					}
-				}
-			}
-			SaveData ();
-		} else {
-			//Startup data.
-			GameData newDat = new GameData();
-			newDat.tokenCount = 50;
-			newDat.dayStarted = System.DateTime.Now;
-			gameData = newDat;
-			SaveData ();
+	public Globals.MainMenu lastState;
+	public Globals.MainMenu currState;
+
+	public Globals.MainMenu targetState;
+
+	public Globals.MainLoadState state;
+	bool initialized = false;
+	float timer;
+
+	public Text dialogText;
+	public Button yesButton;
+	public Button noButton;
+
+	public SpriteButton selectedArt;
+
+	void Awake(){
+		if(!Directory.Exists(Application.persistentDataPath + "/MainData/")){
+			Directory.CreateDirectory (Application.persistentDataPath + "/MainData/");
 		}
-		categories = new List<Globals.CategoryCollection> ();
 		if(!Directory.Exists(Application.persistentDataPath + "/Thumbs/")){
 			Directory.CreateDirectory (Application.persistentDataPath + "/Thumbs/");
 		}
 		if (!Directory.Exists (Application.persistentDataPath + "/LevelData/")) {
 			Directory.CreateDirectory (Application.persistentDataPath + "/LevelData/");
 		}
-		StartCoroutine (InitializeData ());
+	}
+
+	void Update(){
+		timer += Time.deltaTime;
+		if (timer > 120) {
+			timer = 0;
+			CheckTimeDiff ();
+		}
+		if (Input.GetKey (KeyCode.Escape)) {
+			if (currState == Globals.MainMenu.Sprites) {
+				OpenCategories ();
+			} else if (currState == Globals.MainMenu.Dialog) {
+				CancelDialog ();
+			}
+		}
+	}
+
+	void OnApplicationQuit(){
+		SaveData ();
+	}
+
+	void OnApplicationFocus(bool focus){
+		if (initialized) {
+			if (!focus) {
+				SaveData ();
+			} else {
+				CheckTimeDiff ();
+			}
+		}
+	}
+
+	void OnApplicationPause(bool pause){
+		if (initialized) {
+			if (pause) {
+				SaveData ();
+			} else {
+				CheckTimeDiff ();
+			}
+		}
+	}
+
+	public void AnimationFinished(){
+		if (targetState == Globals.MainMenu.Dialog) {
+			yesButton.interactable = true;
+			noButton.interactable = true;
+		}
+		currState = targetState;
+	}
+
+	public void OpenDialog(){
+		dialogText.text = "Would you like to unlock this art for 10 tokens?";
+		yesButton.onClick.RemoveAllListeners ();
+		yesButton.onClick.AddListener(delegate {
+			UnlockArt();
+		});
+		noButton.onClick.RemoveAllListeners ();
+		noButton.onClick.AddListener(delegate {
+			CancelDialog();
+		});
+		lastState = currState;
+		currState = Globals.MainMenu.Busy;
+		targetState = Globals.MainMenu.Dialog;
+		anim.SetTrigger ("Dialog");
+	}
+
+	public void CancelDialog(){
+		yesButton.interactable = false;
+		noButton.interactable = false;
+		targetState = lastState;
+		currState = Globals.MainMenu.Busy;
+		anim.SetTrigger ("Dialog");
+	}
+
+	public void VideoDialog(){
+		dialogText.text = "You don't have enough tokens to unlock this art. Would you like to watch an ad for 15 tokens?";
+		yesButton.onClick.RemoveAllListeners ();
+		yesButton.onClick.AddListener(delegate {
+			WatchVideo();
+		});
+		noButton.onClick.RemoveAllListeners ();
+		noButton.onClick.AddListener(delegate {
+			CancelDialog();
+		});
+	}
+
+	public void WatchVideo(){
+		GameManager.Instance.ads.ShowRewardedVideo ();
+	}
+
+	public void VideoComplete(){
+		gameData.tokenCount += 15;
+		CancelDialog ();
+		SaveData ();
+	}
+
+	public void VideoCanceled(){
+		CancelDialog ();
+		SaveData ();
+	}
+
+	public void UnlockArt(){
+		if (gameData.tokenCount >= 10) {
+			UnlockSingular ();
+			CancelDialog ();
+			SaveData ();
+		} else {
+			if (GameManager.Instance.ads.adReady) {
+				VideoDialog ();
+			} else {
+				dialogText.text = "You don't have enough tokens to unlock this art.";
+			}
+		}
+	}
+
+	void UnlockSingular(){
+		gameData.tokenCount -= 10;
+		if (!gameData.unlocked.Contains (selectedArt.data.myName)) {
+			gameData.unlocked.Add (selectedArt.data.myName);
+		}
+		selectedArt.locked.enabled = false;
+	}
+
+	void Start(){
+		lastState = Globals.MainMenu.Categories;
+		currState = Globals.MainMenu.Categories;
+		bool initialData = false;
+		if (File.Exists (Application.persistentDataPath + "/MainData/GameData.dat")) {
+			BinaryFormatter bf = new BinaryFormatter ();
+			FileStream file = File.Open (Application.persistentDataPath + "/MainData/GameData.dat", FileMode.Open);
+			GameData dat = (GameData)bf.Deserialize (file);
+			file.Close ();
+			gameData = dat;
+		} else {
+			GameData newDat = new GameData();
+			newDat.tokenCount = 50;
+			System.DateTime currTime = System.DateTime.Now;
+			newDat.dayStarted = currTime;
+			newDat.lastCheck = currTime;
+			newDat.unlocked = new List<string> ();
+			gameData = newDat;
+			initialData = true;
+		}
+		categories = new List<Globals.CategoryCollection> ();
+		StartCoroutine(InitializeData ());
+		if (initialData) {
+			StartCoroutine(UnlockInitialData ());
+		} else {
+			state = Globals.MainLoadState.UnlockingSprites;
+		}
+		StartCoroutine(SetLockedState ());
+		StartCoroutine(CheckTimeDiff ());
+	}
+
+	IEnumerator SetLockedState(){
+		while (state != Globals.MainLoadState.UnlockingSprites) {
+			yield return null;
+		}
+		yield return null;
+		for (int xx = 0; xx < categories.Count; xx++) {
+			for (int yy = 0; yy < categories [xx].buttons.Count; yy++) {
+				if (gameData.unlocked.Contains (categories [xx].buttons [yy].data.myName)) {
+					categories [xx].buttons [yy].locked.enabled = false;
+				}
+			}
+		}
+		state = Globals.MainLoadState.Complete;
+	}
+
+	IEnumerator UnlockInitialData(){
+		while (state != Globals.MainLoadState.InitialUnlock) {
+			yield return null;
+		}
+		yield return null;
+		for (int xx = 0; xx < categories.Count; xx++) {
+			int unlockCount = 0;
+			if (categories [xx].type == Globals.Categories.Buildings || categories [xx].type == Globals.Categories.Scenery) {
+				unlockCount = 5;
+			} else if (categories [xx].type != Globals.Categories.Completed || categories [xx].type != Globals.Categories.Started) {
+				unlockCount = 10;
+			}
+			unlockCount = Mathf.Clamp (unlockCount, 0, (categories [xx].buttons.Count));
+			for(int yy = 0; yy < unlockCount; yy++){
+				if(!gameData.unlocked.Contains(categories[xx].buttons[yy].data.myName)){
+					gameData.unlocked.Add (categories [xx].buttons [yy].data.myName);
+				}
+			}
+		}
+		state = Globals.MainLoadState.UnlockingSprites;
+	}
+
+	IEnumerator CheckTimeDiff(){
+		if (state != Globals.MainLoadState.Complete) {
+			yield return null;
+		}
+		yield return null;
+		if (initialized) {
+			System.TimeSpan dayCheck = System.DateTime.Now - gameData.dayStarted;
+			if (dayCheck.TotalHours > 24) {
+				int totalDays = Mathf.FloorToInt ((float)dayCheck.TotalHours / 24);
+				int totalTokens = (totalDays * 30) - gameData.tokensClaimed;
+				gameData.tokensClaimed = 0;
+				gameData.dayStarted = gameData.dayStarted.AddDays (totalDays);
+				gameData.lastCheck = gameData.dayStarted;
+				gameData.tokenCount += totalTokens;
+			}
+			System.TimeSpan currCheck = System.DateTime.Now - gameData.lastCheck;
+			if (currCheck.TotalMinutes > 2) {
+				if (gameData.tokensClaimed < 30) {
+					int totalMinutes = Mathf.FloorToInt ((float)currCheck.TotalMinutes);
+					int totalTokens = Mathf.Clamp (Mathf.FloorToInt(totalMinutes / 2), 0, 30);
+					totalTokens -= gameData.tokensClaimed;
+					gameData.tokensClaimed += totalTokens;
+					gameData.lastCheck = gameData.lastCheck.AddMinutes (totalMinutes * 2);
+					gameData.tokenCount += totalTokens;
+				}
+			}
+			SaveData ();
+		}
 	}
 
 	IEnumerator InitializeData(){
@@ -113,7 +293,7 @@ public class MainMenu : MonoBehaviour {
 				newButton.myCol.sprite = Sprite.Create(newButton.data.thumb, new Rect(0, 0, newButton.data.thumb.width, newButton.data.thumb.height), Vector2.zero, 100);
 			}
 			newButton.myButton.onClick.AddListener (delegate {
-				LoadLevel (newButton.data.myName);
+				LoadLevel (newButton);
 			});
 		}
 		System.Array typeNums = System.Enum.GetValues (typeof(Globals.Categories));
@@ -154,8 +334,9 @@ public class MainMenu : MonoBehaviour {
 			coll.buttons = SortByDifficulty (true, coll.buttons);
 			categories.Add (coll);
 		}
-		Debug.Log ("Finished loading assets.");
 		LayoutRebuilder.MarkLayoutForRebuild(spritePanel.GetComponent<RectTransform> ());
+		initialized = true;
+		state = Globals.MainLoadState.InitialUnlock;
 	}
 
 	List<SpriteButton> SortByDifficulty(bool leastToMost, List<SpriteButton> list){
@@ -191,75 +372,91 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	public void OpenCategories(){
-		spritePanel.SetActive (false);
-		categoriesPanel.SetActive (true);
+		if (currState != Globals.MainMenu.Dialog && currState != Globals.MainMenu.Busy) {
+			spritePanel.SetActive (false);
+			categoriesPanel.SetActive (true);
+			lastState = currState;
+			currState = Globals.MainMenu.Categories;
+		}
 	}
 
 	public void TriggerCategory(string cat){
-		if (cat == "People") {
-			SwitchCategory (Globals.Categories.People);
-		} else if (cat == "Food") {
-			SwitchCategory (Globals.Categories.Food);
-		} else if (cat == "Animals") {
-			SwitchCategory (Globals.Categories.Animals);
-		} else if (cat == "Weapons") {
-			SwitchCategory (Globals.Categories.Weapons);
-		} else if (cat == "Vehicles") {
-			SwitchCategory (Globals.Categories.Vehicles);
-		} else if (cat == "Buildings") {
-			SwitchCategory (Globals.Categories.Buildings);
-		} else if (cat == "Plants") {
-			SwitchCategory (Globals.Categories.Plants);
-		} else if (cat == "Monsters") {
-			SwitchCategory (Globals.Categories.Monsters);
-		} else if (cat == "Dinosaurs") {
-			SwitchCategory (Globals.Categories.Dinosaurs);
-		} else if (cat == "Scenery") {
-			SwitchCategory (Globals.Categories.Scenery);
-		} else if (cat == "Misc") {
-			SwitchCategory (Globals.Categories.Misc);
-		} else if (cat == "Started") {
-			SwitchCategory (Globals.Categories.Started);
-		} else if (cat == "Completed") {
-			SwitchCategory (Globals.Categories.Completed);
+		if (currState != Globals.MainMenu.Dialog && currState != Globals.MainMenu.Dialog) {
+			if (cat == "People") {
+				SwitchCategory (Globals.Categories.People);
+			} else if (cat == "Food") {
+				SwitchCategory (Globals.Categories.Food);
+			} else if (cat == "Animals") {
+				SwitchCategory (Globals.Categories.Animals);
+			} else if (cat == "Weapons") {
+				SwitchCategory (Globals.Categories.Weapons);
+			} else if (cat == "Vehicles") {
+				SwitchCategory (Globals.Categories.Vehicles);
+			} else if (cat == "Buildings") {
+				SwitchCategory (Globals.Categories.Buildings);
+			} else if (cat == "Nature") {
+				SwitchCategory (Globals.Categories.Nature);
+			} else if (cat == "Monsters") {
+				SwitchCategory (Globals.Categories.Monsters);
+			} else if (cat == "Scenery") {
+				SwitchCategory (Globals.Categories.Scenery);
+			} else if (cat == "Misc") {
+				SwitchCategory (Globals.Categories.Misc);
+			} else if (cat == "Started") {
+				SwitchCategory (Globals.Categories.Started);
+			} else if (cat == "Completed") {
+				SwitchCategory (Globals.Categories.Completed);
+			}
 		}
 	}
 
 	void SwitchCategory(Globals.Categories cat){
-		categoriesPanel.SetActive (false);
-		previousType = type;
-		type = cat;
-		for (int xx = 0; xx < categories.Count; xx++) {
-			if (categories [xx].type == previousType) {
-				for (int yy = 0; yy < categories [xx].buttons.Count; yy++) {
-					categories [xx].buttons [yy].gameObject.SetActive (false);
-					categories [xx].buttons [yy].transform.SetParent (null);
+		if (currState != Globals.MainMenu.Dialog && currState != Globals.MainMenu.Dialog) {
+			categoriesPanel.SetActive (false);
+			previousType = type;
+			type = cat;
+			for (int xx = 0; xx < categories.Count; xx++) {
+				if (categories [xx].type == previousType) {
+					for (int yy = 0; yy < categories [xx].buttons.Count; yy++) {
+						categories [xx].buttons [yy].gameObject.SetActive (false);
+						categories [xx].buttons [yy].transform.SetParent (null);
+					}
 				}
 			}
-		}
-		for (int xx = 0; xx < categories.Count; xx++) {
-			if (categories [xx].type == type) {
-				for (int yy = 0; yy < categories [xx].buttons.Count; yy++) {
-					categories [xx].buttons [yy].gameObject.SetActive (true);
-					categories [xx].buttons [yy].transform.SetParent (spritePanel.transform);
+			for (int xx = 0; xx < categories.Count; xx++) {
+				if (categories [xx].type == type) {
+					for (int yy = 0; yy < categories [xx].buttons.Count; yy++) {
+						categories [xx].buttons [yy].gameObject.SetActive (true);
+						categories [xx].buttons [yy].transform.SetParent (spritePanel.transform);
+					}
 				}
 			}
+			spritePanel.SetActive (true);
+			LayoutRebuilder.MarkLayoutForRebuild (spritePanel.GetComponent<RectTransform> ());
+			lastState = currState;
+			currState = Globals.MainMenu.Sprites;
 		}
-		spritePanel.SetActive (true);
-		LayoutRebuilder.MarkLayoutForRebuild (spritePanel.GetComponent<RectTransform> ());
 	}
 
 	void SaveData(){
-		BinaryFormatter bf = new BinaryFormatter ();
-		FileStream file = File.Create (Application.persistentDataPath + "GameData.dat");
-		bf.Serialize (file, gameData);
-		file.Close ();
+		if (initialized) {
+			BinaryFormatter bf = new BinaryFormatter ();
+			FileStream file = File.Create (Application.persistentDataPath + "/MainData/GameData.dat");
+			bf.Serialize (file, gameData);
+			file.Close ();
+		}
 	}
 
-	void LoadLevel(string level){
-		SpriteData myLevel = Resources.Load<SpriteData> ("Sprite Objects/" + level);
-		GameManager.Instance.level = myLevel as SpriteData;
-		UnityEngine.SceneManagement.SceneManager.LoadScene (1, UnityEngine.SceneManagement.LoadSceneMode.Single);
+	void LoadLevel(SpriteButton button){
+		SaveData ();
+		if (gameData.unlocked.Contains (button.data.myName)) {
+			SpriteData myLevel = Resources.Load<SpriteData> ("Sprite Objects/" + button.data.myName);
+			GameManager.Instance.level = myLevel as SpriteData;
+			UnityEngine.SceneManagement.SceneManager.LoadScene (1, UnityEngine.SceneManagement.LoadSceneMode.Single);
+		} else {
+			selectedArt = button;
+			OpenDialog ();
+		}
 	}
 
 }
@@ -270,5 +467,7 @@ public class GameData{
 	public int tokenCount;
 	public int tokensClaimed;
 	public System.DateTime dayStarted;
+	public System.DateTime lastCheck;
+	public List<string> unlocked;
 
 }

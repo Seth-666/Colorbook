@@ -11,13 +11,26 @@ public class Globals : MonoBehaviour {
 		Weapons,
 		Vehicles,
 		Buildings,
-		Plants,
+		Nature,
 		Monsters,
-		Dinosaurs,
 		Scenery,
 		Misc,
 		Started,
 		Completed
+	}
+
+	public enum MainLoadState{
+		LoadingSprites,
+		InitialUnlock,
+		UnlockingSprites,
+		Complete
+	}
+
+	public enum MainMenu{
+		Categories,
+		Sprites,
+		Dialog,
+		Busy
 	}
 
 	public enum UIState{

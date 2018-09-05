@@ -10,6 +10,7 @@ TextureImporter:
     21300010: SwabIcon
     21300012: TickIcon
     21300014: MenuButton
+    21300016: LockIcon
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -291,6 +292,26 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 35a992bab6cc5ce47a3538a7fa660ed4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LockIcon
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 300
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 537098fe2cfb1d349b2d7783382a24c9
       vertices: []
       indices: 
       edges: []

@@ -22,11 +22,7 @@ public class InputManager : MonoBehaviour {
 	public Vector3 currTouch;
 
 	public bool isMobile = false;
-
 	public bool inputOn = false;
-
-	public UnityEngine.UI.Text inputBool;
-	public UnityEngine.UI.Text inputState;
 
 	void Start(){
 		if (Application.isMobilePlatform) {
@@ -38,13 +34,6 @@ public class InputManager : MonoBehaviour {
 	}
 
 	void Update(){
-		inputBool.text = "Input: ";
-		if (inputOn) {
-			inputBool.text += "On";
-		} else {
-			inputBool.text += "Off";
-		}
-		inputState.text = "Current Function: " + state.ToString ();
 		if (state != Globals.InputState.Busy) {
 			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == null) {				
 				if (!isMobile) {

@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
 	public UIManager ui;
 	public CameraController cam;
 	public ObjectPool pool;
+	public AdManager ads;
 
 	public SpriteData level;
 
